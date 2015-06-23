@@ -1,5 +1,9 @@
 # Complier Design
 
+## 项目说明
+
+一个小型的简化版的Pascal编译器
+
 ## 用法
 
 在linux直接运行start.sh即可，
@@ -11,13 +15,12 @@
 
 在start.sh中默认传入了一个测试文件名
 
-## 说明
+## 说明&注意
 
 在编译过程中我采取了-g的debug编译模式，最后生成时可以删除掉
 
-## 项目说明
-
-一个小型的简化版的Pascal编译器
+在vector<xxx>的使用中，例如compound_stmt中，实际顺序应该是vector的逆序，
+这和next的实际链表转换成vector的过程有关，为了方便就不改了，实际过程中，要注意一下
 
 ## 关于测试数据testcode
 

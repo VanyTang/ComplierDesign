@@ -5,7 +5,7 @@ type
         int=Integer;
         long=Integer;
         gao=record
-            g : Integer;
+        	g : Integer;
         end;
 var
 	i,variableName: int;

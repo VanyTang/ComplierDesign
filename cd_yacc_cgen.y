@@ -297,7 +297,7 @@ var_decl : name_list _COLON type_decl _SEMI {
             vector<string>& lst = ((var_decl_s*)$$)->name_list;
             for(name_list_s* p = (name_list_s*)$1; p; p=p->next)
                 lst.push_back(p->ID);
-            ((var_decl_s*)$$)->type_decl = (type_decl_s*)$2;
+            ((var_decl_s*)$$)->type_decl = (type_decl_s*)$3;
 };
         
 routine_part :  routine_part  function_decl {
