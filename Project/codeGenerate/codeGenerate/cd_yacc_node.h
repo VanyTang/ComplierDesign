@@ -136,7 +136,7 @@ struct type_decl_s{
 struct simple_type_decl_s{
 	int MIN;											//record the minimum number of a range type
 	int MAX;											//record the maximum number of a range type
-	vector<string> ID;									//record the identiiers of types which are declared before
+	vector<string> ID;									//record the identiiers showing up in an enumerated type
 	string SYS_TYPE_NAME;
 	// enum {												//record the system types which are showed as following 
 	// 	INTEGER = 0;

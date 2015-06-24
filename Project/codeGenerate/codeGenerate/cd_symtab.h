@@ -23,6 +23,9 @@ struct symtab_range_s{
 		int int_up;
 		char char_up;
 	} up;
+	enum {
+		INTEGER, CHAR
+	}type;
 };
 
 struct symtab_enum_s{
@@ -53,12 +56,12 @@ struct symtab_type_s{
 	symtab_array_s* array_type;
 	symtab_range_s* range_type;
 	int type;
-	//0		system type such as integer and char
-	//1		array
-	//2		record
-	//3		enumerated
-	//4		rang_type
-};
+	//	0		system type such as integer and char
+	//	1		array
+	//	2		record
+	//	3		enumerated
+	//	4		range_type
+};	
 
 struct symtab_variable_s{
 	string ID;

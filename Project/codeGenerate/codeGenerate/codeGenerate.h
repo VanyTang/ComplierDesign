@@ -4,6 +4,8 @@
 #include <sstream>
 #include <fstream>
 
+#define MIN_ENUM_INT 0
+
 using namespace std;
 
 class codeGenerate
