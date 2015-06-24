@@ -76,8 +76,6 @@ struct routine_head_s{
 	var_part_s* var_part;								//variable declare statement
 	type_part_s* type_part;								//type define statement
 	routine_part_s* routine_part;						//routine part statement
-	vector<function_decl_s*> fucntion_decl;				//record the function declaration
-	vector<procedure_decl_s*> procedure_decl;			//record the procedure declaration
 };
 
 //const_part ： CONST  const_expr_list  |  ε
