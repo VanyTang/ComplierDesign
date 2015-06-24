@@ -37,8 +37,14 @@ case语句中label和case前面的int可能产生歧义？
 
 test0.pas是默认用于测试的
 其他的还没改，有一些语法不一致，例如：
-const a = 10; 而不是 const a:integer = 10;
-test8.pas测试通过
+1. const a = 10; 而不是 const a:integer = 10;
+1. 函数或过程若没有参数则不参数列表的括号
+1. for函数体begin .. end;不能省略（即使是一条语句）
+
+测试通过:
+1. test8.pas
+1. test7.pas
+1. test1.pas
 
 ## 吐槽区
 

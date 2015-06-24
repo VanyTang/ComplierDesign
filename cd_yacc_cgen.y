@@ -11,7 +11,8 @@
 
 
         extern int line_no;
-	program_s program;
+	    program_s program;
+        bool finished = false;
 
         extern "C"{
               int yyerror(const char *s);
@@ -49,7 +50,8 @@
 %%
 
 program : program_head routine _DOT{
-        printf("program reduced.\n");
+        //printf("program reduced.\n");
+        finished = true;
 	    $$ = (char*)&program;
         ((program_s*)$$)->ID = ((program_head_s*)$1)->ID;
 	    ((program_s*)$$)->routine = (routine_s*)$2;
@@ -187,11 +189,14 @@ simple_type_decl :  _SYS_TYPE {
                     {
                         ((simple_type_decl_s*)$$)->MIN = str2int(a->VALUE);
                         ((simple_type_decl_s*)$$)->MAX = str2int(b->VALUE);
+                        ((simple_type_decl_s*)$$)->isChar = 0;
+
                     }
                     else if(a->TYPE==const_value_s::CHAR)
                     {
                         ((simple_type_decl_s*)$$)->MIN = (int)str2char(a->VALUE);
                         ((simple_type_decl_s*)$$)->MAX = (int)str2char(b->VALUE);
+                        ((simple_type_decl_s*)$$)->isChar = 1;
                     }
                  }
                  | _MINUS const_value _DOT _DOT const_value {
@@ -204,6 +209,7 @@ simple_type_decl :  _SYS_TYPE {
                     {
                         ((simple_type_decl_s*)$$)->MIN = -str2int(a->VALUE);
                         ((simple_type_decl_s*)$$)->MAX = str2int(b->VALUE);
+                        ((simple_type_decl_s*)$$)->isChar = 0;
                     }
                     else yyerror("expect integer");
                  }
@@ -217,6 +223,7 @@ simple_type_decl :  _SYS_TYPE {
                     {
                         ((simple_type_decl_s*)$$)->MIN = -str2int(a->VALUE);
                         ((simple_type_decl_s*)$$)->MAX = -str2int(b->VALUE);
+                        ((simple_type_decl_s*)$$)->isChar = 0;
                     }
                     else yyerror("expect integer");
                  }
@@ -339,8 +346,8 @@ function_head : _FUNCTION _ID parameters _COLON simple_type_decl {
                 printf("function_head reduced.\n");
                 $$ = (char*)(new function_head_s);
                 ((function_head_s*)$$)->ID = string($2);
-                ((function_head_s*)$$)->parameters = (parameters_s*)$5;
-                ((function_head_s*)$$)->simple_type_decl = (simple_type_decl_s*)$3;
+                ((function_head_s*)$$)->parameters = (parameters_s*)$3;
+                ((function_head_s*)$$)->simple_type_decl = (simple_type_decl_s*)$5;
 };
 
 procedure_decl : procedure_head _SEMI routine _SEMI {
@@ -350,7 +357,7 @@ procedure_decl : procedure_head _SEMI routine _SEMI {
 };
 
 procedure_head : _PROCEDURE _ID parameters {
-                $$ = (char*)(new procedure_decl_s);
+                $$ = (char*)(new procedure_head_s);
                 ((procedure_head_s*)$$)->ID = string($2);
                 ((procedure_head_s*)$$)->parameters = (parameters_s*)$3;
 };
@@ -370,7 +377,7 @@ parameters : _LP para_decl_list _RP {
 para_decl_list : para_decl_list _SEMI para_type_list {
             $$ = (char*)(new para_decl_list_s);
             ((para_decl_list_s*)$$)->next = (para_decl_list_s*)$1;
-            ((para_decl_list_s*)$$)->para_type_list = (para_type_list_s*)$2;
+            ((para_decl_list_s*)$$)->para_type_list = (para_type_list_s*)$3;
                  }
             |   para_type_list {
             $$ = (char*)(new para_decl_list_s);
@@ -394,7 +401,7 @@ para_type_list : var_para_list _COLON simple_type_decl {
 
 var_para_list : _VAR name_list {
             $$ = (char*)(new var_para_list_s);
-            ((var_para_list_s*)$$)->name_list = (name_list_s*)$1;
+            ((var_para_list_s*)$$)->name_list = (name_list_s*)$2;
 };
              
 val_para_list : name_list {
@@ -625,7 +632,7 @@ proc_stmt : _ID {
         | _READ _LP _ID _RP {
              //printf("proc_stmt reduced.\n");                
              $$ = (char*)(new proc_stmt_s);
-             //((proc_stmt_s*)$$)->ID = string($3);
+             ((proc_stmt_s*)$$)->ID = "read";
              ((proc_stmt_s*)$$)->args_list = NULL;
              ((proc_stmt_s*)$$)->readID = string($3);
              //printf("[proc_stmt]READ(%s)--READ\n", $1);                                                                 
@@ -666,6 +673,7 @@ for_stmt : _FOR  _ID  _ASSIGN  expression  direction  expression  _DO compound_s
             ((for_stmt_s*)$$)->expression1 = (expression_s*)$4;
             ((for_stmt_s*)$$)->expression2 = (expression_s*)$6;
             ((for_stmt_s*)$$)->compound_stmt = (compound_stmt_s*)$8;
+            printf("for_stmt reduced.\n");
  };
 
 direction : _TO {
@@ -936,7 +944,7 @@ args_list : args_list  _COMMA  expression {
 
 int yyerror(const char *s)
 {
-    printf("%d %s\n",line_no,s);
+    printf("line %d: %s\n",line_no,s);
     return 0;
 }
 
@@ -958,7 +966,10 @@ int main(int argc, char* args[])
     
     //yacc test
     extern void outputCode(program_s&);
-    outputCode(program);
+    if(finished)
+        outputCode(program);
+    else
+        printf("parse failed.\n");
     
     /*code generation*/
     

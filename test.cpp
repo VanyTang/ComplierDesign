@@ -124,7 +124,7 @@ void expression(expression_s* node)
 void stmt(stmt_s* node)
 {
     if(node->INTEGER!=NULL)
-        cout << *node->INTEGER << ": ";
+        cout << *node->INTEGER << ": " << endl;
     non_label_stmt_s* p = node->non_label_stmt;
     if(p->assign_stmt!=NULL)
     {
@@ -170,19 +170,19 @@ void stmt(stmt_s* node)
     {
         cout << "IF ";
         expression(p->if_stmt->expression);
-        cout << "THEN" << endl;
+        cout << " THEN" << endl;
         compound_stmt(p->if_stmt->compound_stmt);
         if(p->if_stmt->else_clause!=NULL)
         {
-            cout << "ELSE" << endl;
+            cout << endl << "ELSE" << endl;
             compound_stmt(p->if_stmt->else_clause->compound_stmt);
         }
     }
     else if(p->repeat_stmt!=NULL)
     {
         cout << "REPEAT " << endl;
-        vector<stmt_s*>::iterator it =p->repeat_stmt->stmt.begin();
-        for(;it != p->repeat_stmt->stmt.end(); ++it)
+        vector<stmt_s*>::reverse_iterator it =p->repeat_stmt->stmt.rbegin();
+        for(;it != p->repeat_stmt->stmt.rend(); ++it)
             stmt(*it);
         cout << "UNTIL ";
         expression(p->repeat_stmt->expression);
@@ -191,7 +191,7 @@ void stmt(stmt_s* node)
     {
         cout << "WHILE ";
         expression(p->while_stmt->expression);
-        cout << endl << "DO" << endl;
+        cout << " DO" << endl;
         compound_stmt(p->while_stmt->compound_stmt);
     }
     else if(p->for_stmt!=NULL)
@@ -204,7 +204,7 @@ void stmt(stmt_s* node)
             case for_stmt_s::DOWNTO: cout << " DOWNTO "; break;
         }
         expression(p->for_stmt->expression2);
-        cout << "DO" << endl;
+        cout << " DO" << endl;
         compound_stmt(p->for_stmt->compound_stmt);
     }
     else if(p->case_stmt!=NULL)
@@ -213,26 +213,24 @@ void stmt(stmt_s* node)
         expression(p->case_stmt->expression);
         cout << " OF" << endl;
 
-        vector<case_expr_s*>::iterator it = p->case_stmt->case_expr.begin();
-        for(;it != p->case_stmt->case_expr.end();++it)
+        vector<case_expr_s*>::reverse_iterator it = p->case_stmt->case_expr.rbegin();
+        for(;it != p->case_stmt->case_expr.rend();++it)
         {
             case_expr_s* ps = *it;
             if(ps->const_value!=NULL)
             {
                 const_value(ps->const_value);
-                cout << " : ";
+                cout << ": ";
                 stmt(ps->stmt);
-                cout << ";" << endl;
             }
             else
             {
                 cout << *(ps->ID);
-                cout << " : ";
+                cout << ": ";
                 stmt(ps->stmt);
-                cout << ";" << endl;
             }
         }
-        cout << "END" << endl;
+        cout << "END";
     }
     else if(p->goto_stmt!=NULL)
     {
@@ -244,10 +242,10 @@ void stmt(stmt_s* node)
 void compound_stmt(compound_stmt_s* node)
 {
     cout << "BEGIN" << endl;
-    vector<stmt_s*>::iterator p = node->stmt.begin();
-    for(;p != node->stmt.end(); p++)
+    vector<stmt_s*>::reverse_iterator p = node->stmt.rbegin();
+    for(;p != node->stmt.rend(); p++)
         stmt(*p);
-    cout << "END" << endl;
+    cout << "END";
 }
 void routine_body(routine_body_s* node)
 {
@@ -257,7 +255,7 @@ void para_type_list(para_type_list_s* node)
 {
     if(node->var_para_list!=NULL) 
     {
-        cout << "VAR " << endl;
+        cout << "VAR ";
         name_list(node->var_para_list->name_list);
     }
     else 
@@ -271,29 +269,30 @@ void name_list(name_list_s* node)
 {
     if(node!=NULL)
     {
-        stringstream ss("");
         for(name_list_s* p = node; p; p=p->next)
-            ss << p->ID << ",";
-        string str(ss.str());
-        cout << str.substr(0,str.size()-1);
+            cout << p->ID << ",";
+        cout << '\b';
     }
 }
 void parameters(parameters_s* node)
 {
-    vector<para_type_list_s*>::iterator p = node->para_decl_list.begin();
-    for(;p != node->para_decl_list.end(); p++)
+    if(node==NULL) return;
+    cout << "(";
+    vector<para_type_list_s*>::reverse_iterator p = node->para_decl_list.rbegin();
+    for(;p != node->para_decl_list.rend(); p++)
     {
         para_type_list(*p);
-        cout << " ; ";
+        cout << "; ";
     }
+    cout << "\b\b)";
 }
 void procedure_decl(procedure_decl_s* node)
 {
-    cout << "PROCEDURE" << node->procedure_head->ID << " ";
+    cout << "PROCEDURE " << node->procedure_head->ID << " ";
     parameters(node->procedure_head->parameters);
-    cout << " ;" << endl;
+    cout << ";" << endl;
     routine(node->routine);
-    cout << " ;" << endl;
+    cout << ";" << endl << endl;
 }
 void function_decl(function_decl_s* node)
 {
@@ -301,9 +300,9 @@ void function_decl(function_decl_s* node)
     parameters(node->function_head->parameters);
     cout << " : ";
     simple_type_decl(node->function_head->simple_type_decl);
-    cout << " ;" << endl;
+    cout << ";" << endl;
     routine(node->routine);
-    cout << " ;" << endl;
+    cout << ";" << endl << endl;;
 }
 void routine_part(routine_part_s* node)
 {
@@ -315,12 +314,10 @@ void routine_part(routine_part_s* node)
 
 void var_decl(var_decl_s* node)
 {
-    stringstream ss;
-    vector<string>::iterator p;
-    for(p = node->name_list.begin(); p!=node->name_list.end();++p)
-        ss << *p << ",";
-    string str(ss.str());
-    cout << str.substr(0,str.size()-1) << " : ";
+    vector<string>::reverse_iterator p;
+    for(p = node->name_list.rbegin(); p!=node->name_list.rend();++p)
+        cout << *p << ",";
+    cout << "\b : ";
     type_decl(node->type_decl);
     cout << ";" << endl;
 }
@@ -328,26 +325,25 @@ void var_part(var_part_s* node)
 {
     if(node==NULL) return;
     cout << "VAR ";
-    vector<var_decl_s*>::iterator p = node->var_decl.begin();
-    for(; p!=node->var_decl.end();++p)
+    vector<var_decl_s*>::reverse_iterator p = node->var_decl.rbegin();
+    for(; p!=node->var_decl.rend();++p)
         var_decl(*p);
+    cout << endl;
 }
 void field_decl(field_decl_s* node)
 {
-    stringstream ss;
-    vector<string>::iterator p = node->name_list.begin();
-    for( ;p!=node->name_list.end();++p)
-        ss << *p << ",";
-    string str(ss.str());
-    cout << str.substr(0,str.size()-1) << " : ";
+    vector<string>::reverse_iterator p = node->name_list.rbegin();
+    for( ;p!=node->name_list.rend();++p)
+        cout << *p << ",";
+    cout << "\b : ";
     type_decl(node->type_decl);
     cout << ";" << endl;
 }
 void record_type_decl(record_type_decl_s* node)
 {
     cout << "RECORD" << endl;
-    vector<field_decl_s*>::iterator p = node->field_decl.begin();
-    for(; p!=node->field_decl.end();++p)
+    vector<field_decl_s*>::reverse_iterator p = node->field_decl.rbegin();
+    for(; p!=node->field_decl.rend();++p)
         field_decl(*p);
     cout << "END";
 }
@@ -368,8 +364,8 @@ void simple_type_decl(simple_type_decl_s* node)
     else if(node->TYPE==simple_type_decl_s::ENUM_TYPE)
     {
         cout << "(";
-        vector<string>::iterator p;
-        for(p = node->ID.begin(); p!=node->ID.end();++p)
+        vector<string>::reverse_iterator p;
+        for(p = node->ID.rbegin(); p!=node->ID.rend();++p)
                 cout << *p << ",";
         cout << ")";
     }
@@ -406,8 +402,8 @@ void type_part(type_part_s* node)
 {
     if(node==NULL) return;
     cout << "TYPE " << endl;
-    vector<type_definition_s*>::iterator p;
-    for(p = node->type_definition.begin();p != node->type_definition.end(); p++)
+    vector<type_definition_s*>::reverse_iterator p;
+    for(p = node->type_definition.rbegin();p != node->type_definition.rend(); p++)
         type_definition(*p);
     cout << endl;
 }
@@ -427,8 +423,8 @@ void const_part(const_part_s* node)
 {
     if(node==NULL) return;
     cout << "CONST " << endl;
-    vector<const_expr_list_s*>::iterator p;
-    for(p = node->const_expr_list.begin();p != node->const_expr_list.end(); p++)
+    vector<const_expr_list_s*>::reverse_iterator p;
+    for(p = node->const_expr_list.rbegin();p != node->const_expr_list.rend(); p++)
         const_expr_list(*p);
     cout << endl;
 }
@@ -451,6 +447,7 @@ void program (program_s* node)
 {
     cout << "PROGRAM " << node->ID << ';' << endl;
     routine(node->routine);
+    cout << "." << endl;
 }
 
 void outputCode(program_s& prog)
