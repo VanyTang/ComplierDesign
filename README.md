@@ -71,3 +71,5 @@ SYS_CON: "false", "maxint", "true"
 SYS_TYPE: "integer", "real", "boolean", "char"
 
 const_value 中的 STRING是不是不要实现了。
+
+Yacc中要实现个UpperClass，对于一些公用的标识符，统一转换成大写。

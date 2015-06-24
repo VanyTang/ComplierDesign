@@ -51,7 +51,7 @@ extern int yydebug;
     _RB = 261,
     _DOT = 262,
     _COLON = 263,
-    _COMMA = 264,
+    _COMMA_SIGN = 264,
     _SEMI = 265,
     _MOD = 266,
     _MUL = 267,
@@ -110,7 +110,7 @@ extern int yydebug;
 #define _RB 261
 #define _DOT 262
 #define _COLON 263
-#define _COMMA 264
+#define _COMMA_SIGN 264
 #define _SEMI 265
 #define _MOD 266
 #define _MUL 267

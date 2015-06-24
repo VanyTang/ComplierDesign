@@ -1,8 +1,8 @@
 %{
-    #define UC 
+    //#define UC 
 	#include "cd_yacc_node.h"
 #ifdef UC
-        #include "./Project/codeGenerate/codeGenerate/codeGenerate.h"
+        #include "codeGenerate.h"
 #endif
 	#include <stdio.h>
 	#include <stdlib.h>
@@ -47,9 +47,18 @@
             }
             return str[0];
         }
+        string ToUpperClass(string str)
+        {
+            string ret = str;
+            int len = (int)str.size();
+            for(int i = 0;i < len;++i)
+                if('a'<=str[i] && str[i]<='z')
+                    ret[i] += 'A' - 'a';
+            return ret;
+        }
 %}
 
-%token _LP _RP _LB _RB _DOT _COLON _COMMA _SEMI _MOD _MUL _PLUS _GE _GT _LE _LT _EQUAL _DIV _ASSIGN 
+%token _LP _RP _LB _RB _DOT _COLON _COMMA_SIGN _SEMI _MOD _MUL _PLUS _GE _GT _LE _LT _EQUAL _DIV _ASSIGN 
 %token _SYS_FUNC _SYS_PROC _SYS_CON _SYS_TYPE  _UNEQUAL
 %token _DO _TO _IF _OR _OF _END _FOR _VAR _NOT _AND _ELSE _READ _CASE _THEN _GOTO _ARRAY _BEGIN _UNTIL _WHILE
 %token _CONST _REPEAT _RECORD _DOWNTO _PROGRAM _PROCEDURE _FUNCTION
@@ -166,7 +175,7 @@ type_decl : simple_type_decl {
 simple_type_decl :  _SYS_TYPE {
                     $$ = (char*)(new simple_type_decl_s);
                     ((simple_type_decl_s*)$$)->TYPE = simple_type_decl_s::SYS_TYPE;
-                    ((simple_type_decl_s*)$$)->SYS_TYPE_NAME = string($1);
+                    ((simple_type_decl_s*)$$)->SYS_TYPE_NAME = ToUpperClass(string($1));
                  }
                  | _ID { 
                     $$ = (char*)(new simple_type_decl_s);
@@ -276,7 +285,7 @@ field_decl : name_list _COLON type_decl _SEMI {
                     for(name_list_s* p = (name_list_s*)$1; p; p=p->next)
                         lst.push_back(p->ID);
 };
-name_list : name_list _COMMA _ID {
+name_list : name_list _COMMA_SIGN _ID {
                     $$ = (char*)(new name_list_s);
                     ((name_list_s*)$$)->next = (name_list_s*)$1;
                     ((name_list_s*)$$)->ID = string($3);
@@ -642,7 +651,7 @@ proc_stmt : _ID {
         | _READ _LP _ID _RP {
              ////printf("proc_stmt reduced.\n");                
              $$ = (char*)(new proc_stmt_s);
-             ((proc_stmt_s*)$$)->ID = "read";
+             ((proc_stmt_s*)$$)->ID = "READ";
              ((proc_stmt_s*)$$)->args_list = NULL;
              ((proc_stmt_s*)$$)->readID = string($3);
              ////printf("[proc_stmt]READ(%s)--READ\n", $1);                                                                 
@@ -939,7 +948,7 @@ factor : _ID  {
             ////printf("factor %s.%s reduced.\n",((factor_s*)$$)->ID_DOT_ID->first.c_str(),((factor_s*)$$)->ID_DOT_ID->second.c_str());                        
 };
 
-args_list : args_list  _COMMA  expression {
+args_list : args_list  _COMMA_SIGN  expression {
             $$ = (char*)(new args_list_s);
             ((args_list_s*)$$)->next = (args_list_s*)$1;
             ((args_list_s*)$$)->expression = (expression_s*)$3;

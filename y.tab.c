@@ -64,10 +64,10 @@
 /* Copy the first part of user declarations.  */
 #line 1 "cd_yacc_cgen.y" /* yacc.c:339  */
 
-    #define UC 
+    //#define UC 
 	#include "cd_yacc_node.h"
 #ifdef UC
-        #include "./Project/codeGenerate/codeGenerate/codeGenerate.h"
+        #include "codeGenerate.h"
 #endif
 	#include <stdio.h>
 	#include <stdlib.h>
@@ -112,8 +112,17 @@
             }
             return str[0];
         }
+        string ToUpperClass(string str)
+        {
+            string ret = str;
+            int len = (int)str.size();
+            for(int i = 0;i < len;++i)
+                if('a'<=str[i] && str[i]<='z')
+                    ret[i] += 'A' - 'a';
+            return ret;
+        }
 
-#line 117 "y.tab.c" /* yacc.c:339  */
+#line 126 "y.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -154,7 +163,7 @@ extern int yydebug;
     _RB = 261,
     _DOT = 262,
     _COLON = 263,
-    _COMMA = 264,
+    _COMMA_SIGN = 264,
     _SEMI = 265,
     _MOD = 266,
     _MUL = 267,
@@ -213,7 +222,7 @@ extern int yydebug;
 #define _RB 261
 #define _DOT 262
 #define _COLON 263
-#define _COMMA 264
+#define _COMMA_SIGN 264
 #define _SEMI 265
 #define _MOD 266
 #define _MUL 267
@@ -280,7 +289,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 284 "y.tab.c" /* yacc.c:358  */
+#line 293 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -583,19 +592,19 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    60,    60,    67,    72,    78,    85,    92,    95,   101,
-     107,   111,   115,   120,   126,   132,   134,   138,   143,   148,
-     154,   160,   166,   171,   178,   186,   212,   226,   240,   249,
-     255,   262,   267,   272,   279,   284,   290,   297,   301,   306,
-     312,   320,   326,   332,   339,   344,   349,   355,   363,   369,
-     376,   383,   387,   392,   398,   405,   412,   417,   422,   428,
-     438,   443,   446,   453,   460,   473,   486,   499,   512,   525,
-     538,   551,   564,   579,   589,   599,   610,   618,   626,   634,
-     642,   651,   658,   661,   664,   673,   679,   689,   692,   697,
-     706,   710,   716,   722,   729,   734,   740,   746,   752,   758,
-     764,   770,   778,   784,   790,   796,   804,   810,   816,   822,
-     828,   836,   847,   858,   869,   880,   890,   900,   910,   920,
-     930,   942,   946
+       0,    69,    69,    76,    81,    87,    94,   101,   104,   110,
+     116,   120,   124,   129,   135,   141,   143,   147,   152,   157,
+     163,   169,   175,   180,   187,   195,   221,   235,   249,   258,
+     264,   271,   276,   281,   288,   293,   299,   306,   310,   315,
+     321,   329,   335,   341,   348,   353,   358,   364,   372,   378,
+     385,   392,   396,   401,   407,   414,   421,   426,   431,   437,
+     447,   452,   455,   462,   469,   482,   495,   508,   521,   534,
+     547,   560,   573,   588,   598,   608,   619,   627,   635,   643,
+     651,   660,   667,   670,   673,   682,   688,   698,   701,   706,
+     715,   719,   725,   731,   738,   743,   749,   755,   761,   767,
+     773,   779,   787,   793,   799,   805,   813,   819,   825,   831,
+     837,   845,   856,   867,   878,   889,   899,   909,   919,   929,
+     939,   951,   955
 };
 #endif
 
@@ -605,7 +614,7 @@ static const yytype_uint16 yyrline[] =
 static const char *const yytname[] =
 {
   "$end", "error", "$undefined", "_LP", "_RP", "_LB", "_RB", "_DOT",
-  "_COLON", "_COMMA", "_SEMI", "_MOD", "_MUL", "_PLUS", "_GE", "_GT",
+  "_COLON", "_COMMA_SIGN", "_SEMI", "_MOD", "_MUL", "_PLUS", "_GE", "_GT",
   "_LE", "_LT", "_EQUAL", "_DIV", "_ASSIGN", "_SYS_FUNC", "_SYS_PROC",
   "_SYS_CON", "_SYS_TYPE", "_UNEQUAL", "_DO", "_TO", "_IF", "_OR", "_OF",
   "_END", "_FOR", "_VAR", "_NOT", "_AND", "_ELSE", "_READ", "_CASE",
@@ -1559,7 +1568,7 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 60 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 69 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
         ////printf("program reduced.\n");
         finished = true;
@@ -1567,32 +1576,32 @@ yyreduce:
         ((program_s*)(yyval))->ID = ((program_head_s*)(yyvsp[-2]))->ID;
 	    ((program_s*)(yyval))->routine = (routine_s*)(yyvsp[-1]);
 }
-#line 1571 "y.tab.c" /* yacc.c:1646  */
+#line 1580 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 67 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 76 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
         ////printf("program_head %s reduced.\n",$2);
         (yyval) = (char*)(new program_head_s);
         ((program_head_s*)(yyval))->ID = string((yyvsp[-1]));
 }
-#line 1581 "y.tab.c" /* yacc.c:1646  */
+#line 1590 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 72 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 81 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
         ////printf("routine reduced.\n");
         (yyval) = (char*)(new routine_s);
         ((routine_s*)(yyval))->routine_head = (routine_head_s*)(yyvsp[-1]);
         ((routine_s*)(yyval))->routine_body = (routine_body_s*)(yyvsp[0]);
 }
-#line 1592 "y.tab.c" /* yacc.c:1646  */
+#line 1601 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 78 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 87 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
 	    (yyval) = (char*)(new routine_head_s);
         ((routine_head_s*)(yyval))->const_part = (const_part_s*)(yyvsp[-3]);
@@ -1600,11 +1609,11 @@ yyreduce:
         ((routine_head_s*)(yyval))->var_part = (var_part_s*)(yyvsp[-1]);
         ((routine_head_s*)(yyval))->routine_part = (routine_part_s*)(yyvsp[0]);
 }
-#line 1604 "y.tab.c" /* yacc.c:1646  */
+#line 1613 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 85 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 94 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
         (yyval) = (char*)(new const_part_s);
         vector<const_expr_list_s*>& lst = ((const_part_s*)(yyval))->const_expr_list;
@@ -1612,165 +1621,165 @@ yyreduce:
         for(const_expr_list_s* p = (const_expr_list_s*)(yyvsp[0]); p; p=p->next)
              lst.push_back(p);
      }
-#line 1616 "y.tab.c" /* yacc.c:1646  */
+#line 1625 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 92 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 101 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
          (yyval) = NULL; 
 }
-#line 1624 "y.tab.c" /* yacc.c:1646  */
+#line 1633 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 95 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 104 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new const_expr_list_s);
             ((const_expr_list_s*)(yyval))->next = (const_expr_list_s*)(yyvsp[-4]);
             ((const_expr_list_s*)(yyval))->ID = string((yyvsp[-3]));
             ((const_expr_list_s*)(yyval))->const_value = (const_value_s*)(yyvsp[-1]);
         }
-#line 1635 "y.tab.c" /* yacc.c:1646  */
+#line 1644 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 101 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 110 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new const_expr_list_s);
             ((const_expr_list_s*)(yyval))->next = NULL;
             ((const_expr_list_s*)(yyval))->ID = string((yyvsp[-3]));
             ((const_expr_list_s*)(yyval))->const_value = (const_value_s*)(yyvsp[-1]);
 }
-#line 1646 "y.tab.c" /* yacc.c:1646  */
+#line 1655 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 108 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 117 "cd_yacc_cgen.y" /* yacc.c:1646  */
     { (yyval) = (char*)(new const_value_s); ((const_value_s*)(yyval))->VALUE = string((yyvsp[0])); ((const_value_s*)(yyval))->TYPE = const_value_s::INTEGER;
                     //printf("const value (INTEGER %s) reduced.\n",((const_value_s*)$$)->VALUE.c_str()); 
                     }
-#line 1654 "y.tab.c" /* yacc.c:1646  */
+#line 1663 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 112 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 121 "cd_yacc_cgen.y" /* yacc.c:1646  */
     { (yyval) = (char*)(new const_value_s); ((const_value_s*)(yyval))->VALUE = string((yyvsp[0])); ((const_value_s*)(yyval))->TYPE = const_value_s::REAL;
                     //printf("const value (REAL %s) reduced.\n",((const_value_s*)$$)->VALUE.c_str()); 
-                    }
-#line 1662 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 12:
-#line 116 "cd_yacc_cgen.y" /* yacc.c:1646  */
-    { (yyval) = (char*)(new const_value_s); ((const_value_s*)(yyval))->TYPE = const_value_s::CHAR;
-                  string strtmp = string((yyvsp[0]));((const_value_s*)(yyval))->VALUE = strtmp.substr(1,strtmp.size()-2);
-                    //printf("const value (CHAR %s) reduced.\n",((const_value_s*)$$)->VALUE.c_str()); 
                     }
 #line 1671 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 13:
-#line 121 "cd_yacc_cgen.y" /* yacc.c:1646  */
-    { (yyval) = (char*)(new const_value_s); ((const_value_s*)(yyval))->TYPE = const_value_s::STRING;
+  case 12:
+#line 125 "cd_yacc_cgen.y" /* yacc.c:1646  */
+    { (yyval) = (char*)(new const_value_s); ((const_value_s*)(yyval))->TYPE = const_value_s::CHAR;
                   string strtmp = string((yyvsp[0]));((const_value_s*)(yyval))->VALUE = strtmp.substr(1,strtmp.size()-2);
-                    //printf("const value (STRING %s) reduced.\n",((const_value_s*)$$)->VALUE.c_str()); 
+                    //printf("const value (CHAR %s) reduced.\n",((const_value_s*)$$)->VALUE.c_str()); 
                     }
 #line 1680 "y.tab.c" /* yacc.c:1646  */
     break;
 
+  case 13:
+#line 130 "cd_yacc_cgen.y" /* yacc.c:1646  */
+    { (yyval) = (char*)(new const_value_s); ((const_value_s*)(yyval))->TYPE = const_value_s::STRING;
+                  string strtmp = string((yyvsp[0]));((const_value_s*)(yyval))->VALUE = strtmp.substr(1,strtmp.size()-2);
+                    //printf("const value (STRING %s) reduced.\n",((const_value_s*)$$)->VALUE.c_str()); 
+                    }
+#line 1689 "y.tab.c" /* yacc.c:1646  */
+    break;
+
   case 14:
-#line 126 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 135 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
               (yyval) = (char*)(new type_part_s);
               vector<type_definition_s*>& lst = ((type_part_s*)(yyval))->type_definition;
               for(type_decl_list_s* p = (type_decl_list_s*)(yyvsp[0]); p; p=p->next)
                 lst.push_back(p->type_definition);
             }
-#line 1691 "y.tab.c" /* yacc.c:1646  */
+#line 1700 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 132 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 141 "cd_yacc_cgen.y" /* yacc.c:1646  */
     { (yyval) = NULL; 
 }
-#line 1698 "y.tab.c" /* yacc.c:1646  */
+#line 1707 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 134 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 143 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
         (yyval) = (char*)(new type_decl_list_s);
         ((type_decl_list_s*)(yyval))->next = (type_decl_list_s*)(yyvsp[-1]);
         ((type_decl_list_s*)(yyval))->type_definition = (type_definition_s*)(yyvsp[0]); }
-#line 1707 "y.tab.c" /* yacc.c:1646  */
+#line 1716 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 138 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 147 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
         (yyval) = (char*)(new type_decl_list_s);
         ((type_decl_list_s*)(yyval))->next = NULL;
         ((type_decl_list_s*)(yyval))->type_definition = (type_definition_s*)(yyvsp[0]);
 }
-#line 1717 "y.tab.c" /* yacc.c:1646  */
+#line 1726 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 143 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 152 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
         (yyval) = (char*)(new type_definition_s);
         ((type_definition_s*)(yyval))->ID = string((yyvsp[-3]));
         ((type_definition_s*)(yyval))->type_decl = (type_decl_s*)(yyvsp[-1]);
 }
-#line 1727 "y.tab.c" /* yacc.c:1646  */
+#line 1736 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 148 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 157 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
         (yyval) = (char*)(new type_decl_s);
         ((type_decl_s*)(yyval))->simple_type_decl = (simple_type_decl_s*)(yyvsp[0]);
         ((type_decl_s*)(yyval))->array_type_decl = NULL;
         ((type_decl_s*)(yyval))->record_type_decl = NULL;
           }
-#line 1738 "y.tab.c" /* yacc.c:1646  */
+#line 1747 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 154 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 163 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
         (yyval) = (char*)(new type_decl_s);
         ((type_decl_s*)(yyval))->simple_type_decl = NULL;
         ((type_decl_s*)(yyval))->array_type_decl = (array_type_decl_s*)(yyvsp[0]);
         ((type_decl_s*)(yyval))->record_type_decl = NULL;
             }
-#line 1749 "y.tab.c" /* yacc.c:1646  */
+#line 1758 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 160 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 169 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
         (yyval) = (char*)(new type_decl_s);
         ((type_decl_s*)(yyval))->simple_type_decl = NULL;
         ((type_decl_s*)(yyval))->array_type_decl = NULL;
         ((type_decl_s*)(yyval))->record_type_decl = (record_type_decl_s*)(yyvsp[0]);
 }
-#line 1760 "y.tab.c" /* yacc.c:1646  */
+#line 1769 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 166 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 175 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
                     (yyval) = (char*)(new simple_type_decl_s);
                     ((simple_type_decl_s*)(yyval))->TYPE = simple_type_decl_s::SYS_TYPE;
-                    ((simple_type_decl_s*)(yyval))->SYS_TYPE_NAME = string((yyvsp[0]));
+                    ((simple_type_decl_s*)(yyval))->SYS_TYPE_NAME = ToUpperClass(string((yyvsp[0])));
                  }
-#line 1770 "y.tab.c" /* yacc.c:1646  */
+#line 1779 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 171 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 180 "cd_yacc_cgen.y" /* yacc.c:1646  */
     { 
                     (yyval) = (char*)(new simple_type_decl_s);
                     ((simple_type_decl_s*)(yyval))->TYPE = simple_type_decl_s::ID_TYPE;
@@ -1778,11 +1787,11 @@ yyreduce:
                     lstID.clear();
                     lstID.push_back(string((yyvsp[0])));
                  }
-#line 1782 "y.tab.c" /* yacc.c:1646  */
+#line 1791 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 178 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 187 "cd_yacc_cgen.y" /* yacc.c:1646  */
     { 
                     (yyval) = (char*)(new simple_type_decl_s);
                     ((simple_type_decl_s*)(yyval))->TYPE = simple_type_decl_s::RANGE_TYPE;
@@ -1791,11 +1800,11 @@ yyreduce:
                     lstID.push_back(string((yyvsp[-3])));
                     lstID.push_back(string((yyvsp[0])));
                  }
-#line 1795 "y.tab.c" /* yacc.c:1646  */
+#line 1804 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 186 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 195 "cd_yacc_cgen.y" /* yacc.c:1646  */
     { 
                     (yyval) = (char*)(new simple_type_decl_s);
                     ((simple_type_decl_s*)(yyval))->TYPE = simple_type_decl_s::RANGE_TYPE;
@@ -1822,11 +1831,11 @@ yyreduce:
                         ((simple_type_decl_s*)(yyval))->isChar = 1;
                     }
                  }
-#line 1826 "y.tab.c" /* yacc.c:1646  */
+#line 1835 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 212 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 221 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
                     (yyval) = (char*)(new simple_type_decl_s);
                     ((simple_type_decl_s*)(yyval))->TYPE = simple_type_decl_s::RANGE_TYPE;
@@ -1841,11 +1850,11 @@ yyreduce:
                     }
                     else yyerror("expect integer");
                  }
-#line 1845 "y.tab.c" /* yacc.c:1646  */
+#line 1854 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 226 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 235 "cd_yacc_cgen.y" /* yacc.c:1646  */
     { 
                     (yyval) = (char*)(new simple_type_decl_s);
                     ((simple_type_decl_s*)(yyval))->TYPE = simple_type_decl_s::RANGE_TYPE;
@@ -1860,11 +1869,11 @@ yyreduce:
                     }
                     else yyerror("expect integer");
                  }
-#line 1864 "y.tab.c" /* yacc.c:1646  */
+#line 1873 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 240 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 249 "cd_yacc_cgen.y" /* yacc.c:1646  */
     { 
                     (yyval) = (char*)(new simple_type_decl_s);
                     ((simple_type_decl_s*)(yyval))->TYPE = simple_type_decl_s::ENUM_TYPE;
@@ -1874,21 +1883,21 @@ yyreduce:
                         lstID.push_back(p->ID);
                         
 }
-#line 1878 "y.tab.c" /* yacc.c:1646  */
+#line 1887 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 249 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 258 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
                 (yyval) = (char*)(new array_type_decl_s);
                 ((array_type_decl_s*)(yyval))->simple_type_decl = (simple_type_decl_s*)(yyvsp[-3]);
                 ((array_type_decl_s*)(yyval))->type_decl = (type_decl_s*)(yyvsp[0]);
 }
-#line 1888 "y.tab.c" /* yacc.c:1646  */
+#line 1897 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 255 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 264 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
                 (yyval) = (char*)(new record_type_decl_s);
                 vector<field_decl_s*>& lst = ((record_type_decl_s*)(yyval))->field_decl;
@@ -1896,31 +1905,31 @@ yyreduce:
                 for(field_decl_list_s* p = (field_decl_list_s*)(yyvsp[-1]); p; p=p->next)
                     lst.push_back(p->field_decl);
 }
-#line 1900 "y.tab.c" /* yacc.c:1646  */
+#line 1909 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 262 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 271 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
                     (yyval) = (char*)(new field_decl_list_s);
                     ((field_decl_list_s*)(yyval))->next = (field_decl_list_s*)(yyvsp[-1]);
                     ((field_decl_list_s*)(yyval))->field_decl = (field_decl_s*)(yyvsp[0]);
                 }
-#line 1910 "y.tab.c" /* yacc.c:1646  */
+#line 1919 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 267 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 276 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
                     (yyval) = (char*)(new field_decl_list_s);
                     ((field_decl_list_s*)(yyval))->next = NULL;
                     ((field_decl_list_s*)(yyval))->field_decl = (field_decl_s*)(yyvsp[0]);
 }
-#line 1920 "y.tab.c" /* yacc.c:1646  */
+#line 1929 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 272 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 281 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
                     (yyval) = (char*)(new field_decl_s);
                     ((field_decl_s*)(yyval))->type_decl = (type_decl_s*)(yyvsp[-1]);
@@ -1928,31 +1937,31 @@ yyreduce:
                     for(name_list_s* p = (name_list_s*)(yyvsp[-3]); p; p=p->next)
                         lst.push_back(p->ID);
 }
-#line 1932 "y.tab.c" /* yacc.c:1646  */
+#line 1941 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 279 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 288 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
                     (yyval) = (char*)(new name_list_s);
                     ((name_list_s*)(yyval))->next = (name_list_s*)(yyvsp[-2]);
                     ((name_list_s*)(yyval))->ID = string((yyvsp[0]));
              }
-#line 1942 "y.tab.c" /* yacc.c:1646  */
+#line 1951 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 284 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 293 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
                     (yyval) = (char*)(new name_list_s);
                     ((name_list_s*)(yyval))->next = NULL;
                     ((name_list_s*)(yyval))->ID = string((yyvsp[0]));
 }
-#line 1952 "y.tab.c" /* yacc.c:1646  */
+#line 1961 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 290 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 299 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new var_part_s);
             vector<var_decl_s*>& lst = ((var_part_s*)(yyval))->var_decl;
@@ -1960,39 +1969,39 @@ yyreduce:
             for(var_decl_list_s* p = (var_decl_list_s*)(yyvsp[0]); p; p=p->next)
                 lst.push_back(p->var_decl);
          }
-#line 1964 "y.tab.c" /* yacc.c:1646  */
+#line 1973 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 297 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 306 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
              (yyval) = NULL; 
 }
-#line 1972 "y.tab.c" /* yacc.c:1646  */
+#line 1981 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 301 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 310 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new var_decl_list_s);
             ((var_decl_list_s*)(yyval))->next = (var_decl_list_s*)(yyvsp[-1]);
             ((var_decl_list_s*)(yyval))->var_decl = (var_decl_s*)(yyvsp[0]);
                 }
-#line 1982 "y.tab.c" /* yacc.c:1646  */
+#line 1991 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 306 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 315 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new var_decl_list_s);
             ((var_decl_list_s*)(yyval))->next = NULL;
             ((var_decl_list_s*)(yyval))->var_decl = (var_decl_s*)(yyvsp[0]);
 }
-#line 1992 "y.tab.c" /* yacc.c:1646  */
+#line 2001 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 312 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 321 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new var_decl_s);                    
             vector<string>& lst = ((var_decl_s*)(yyval))->name_list;
@@ -2000,33 +2009,33 @@ yyreduce:
                 lst.push_back(p->ID);
             ((var_decl_s*)(yyval))->type_decl = (type_decl_s*)(yyvsp[-1]);
 }
-#line 2004 "y.tab.c" /* yacc.c:1646  */
+#line 2013 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 320 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 329 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
                 (yyval) = (char*)(new routine_part_s);
                 ((routine_part_s*)(yyval))->next = (routine_part_s*)(yyvsp[-1]);
                 ((routine_part_s*)(yyval))->procedure_decl = NULL;
                 ((routine_part_s*)(yyval))->function_decl = (function_decl_s*)(yyvsp[0]);
              }
-#line 2015 "y.tab.c" /* yacc.c:1646  */
+#line 2024 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 326 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 335 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
                 (yyval) = (char*)(new routine_part_s);
                 ((routine_part_s*)(yyval))->next = (routine_part_s*)(yyvsp[-1]);
                 ((routine_part_s*)(yyval))->procedure_decl = (procedure_decl_s*)(yyvsp[0]);
                 ((routine_part_s*)(yyval))->function_decl = NULL;
              }
-#line 2026 "y.tab.c" /* yacc.c:1646  */
+#line 2035 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 332 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 341 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
                 //printf("function_decl reduced.\n");
                 (yyval) = (char*)(new routine_part_s);
@@ -2034,39 +2043,39 @@ yyreduce:
                 ((routine_part_s*)(yyval))->procedure_decl = NULL;
                 ((routine_part_s*)(yyval))->function_decl = (function_decl_s*)(yyvsp[0]);
              }
-#line 2038 "y.tab.c" /* yacc.c:1646  */
+#line 2047 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 339 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 348 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
                 (yyval) = (char*)(new routine_part_s);
                 ((routine_part_s*)(yyval))->next = NULL;
                 ((routine_part_s*)(yyval))->procedure_decl = (procedure_decl_s*)(yyvsp[0]);
                 ((routine_part_s*)(yyval))->function_decl = NULL;
              }
-#line 2049 "y.tab.c" /* yacc.c:1646  */
+#line 2058 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 344 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 353 "cd_yacc_cgen.y" /* yacc.c:1646  */
     { (yyval) = NULL;
 }
-#line 2056 "y.tab.c" /* yacc.c:1646  */
+#line 2065 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 349 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 358 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
                 (yyval) = (char*)(new function_decl_s);
                 ((function_decl_s*)(yyval))->function_head = (function_head_s*)(yyvsp[-3]);
                 ((function_decl_s*)(yyval))->routine = (routine_s*)(yyvsp[-1]);
 }
-#line 2066 "y.tab.c" /* yacc.c:1646  */
+#line 2075 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 355 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 364 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
                 //printf("function_head reduced.\n");
                 (yyval) = (char*)(new function_head_s);
@@ -2074,31 +2083,31 @@ yyreduce:
                 ((function_head_s*)(yyval))->parameters = (parameters_s*)(yyvsp[-2]);
                 ((function_head_s*)(yyval))->simple_type_decl = (simple_type_decl_s*)(yyvsp[0]);
 }
-#line 2078 "y.tab.c" /* yacc.c:1646  */
+#line 2087 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 363 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 372 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
                 (yyval) = (char*)(new procedure_decl_s);
                 ((procedure_decl_s*)(yyval))->procedure_head = (procedure_head_s*)(yyvsp[-3]);
                 ((procedure_decl_s*)(yyval))->routine = (routine_s*)(yyvsp[-1]);
 }
-#line 2088 "y.tab.c" /* yacc.c:1646  */
+#line 2097 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 369 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 378 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
                 (yyval) = (char*)(new procedure_head_s);
                 ((procedure_head_s*)(yyval))->ID = string((yyvsp[-1]));
                 ((procedure_head_s*)(yyval))->parameters = (parameters_s*)(yyvsp[0]);
 }
-#line 2098 "y.tab.c" /* yacc.c:1646  */
+#line 2107 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 376 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 385 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
                 (yyval) = (char*)(new parameters_s);
                 vector<para_type_list_s*>& lst = ((parameters_s*)(yyval))->para_decl_list;
@@ -2106,39 +2115,39 @@ yyreduce:
                 for(para_decl_list_s* p = ((para_decl_list_s*)(yyvsp[-1])); p; p=p->next)
                     lst.push_back(p->para_type_list);
            }
-#line 2110 "y.tab.c" /* yacc.c:1646  */
+#line 2119 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 383 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 392 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = NULL;
 }
-#line 2118 "y.tab.c" /* yacc.c:1646  */
+#line 2127 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 387 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 396 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new para_decl_list_s);
             ((para_decl_list_s*)(yyval))->next = (para_decl_list_s*)(yyvsp[-2]);
             ((para_decl_list_s*)(yyval))->para_type_list = (para_type_list_s*)(yyvsp[0]);
                  }
-#line 2128 "y.tab.c" /* yacc.c:1646  */
+#line 2137 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 392 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 401 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new para_decl_list_s);
             ((para_decl_list_s*)(yyval))->next = NULL;
             ((para_decl_list_s*)(yyval))->para_type_list = (para_type_list_s*)(yyvsp[0]);
 }
-#line 2138 "y.tab.c" /* yacc.c:1646  */
+#line 2147 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 398 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 407 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new para_type_list_s);
             ((para_type_list_s*)(yyval))->var_para_list = (var_para_list_s*)(yyvsp[-2]);
@@ -2146,50 +2155,50 @@ yyreduce:
             ((para_type_list_s*)(yyval))->simple_type_decl = (simple_type_decl_s*)(yyvsp[0]);
 
                }
-#line 2150 "y.tab.c" /* yacc.c:1646  */
+#line 2159 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 405 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 414 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new para_type_list_s);
             ((para_type_list_s*)(yyval))->val_para_list = (val_para_list_s*)(yyvsp[-2]);
             ((para_type_list_s*)(yyval))->var_para_list = NULL;
             ((para_type_list_s*)(yyval))->simple_type_decl = (simple_type_decl_s*)(yyvsp[0]);
 }
-#line 2161 "y.tab.c" /* yacc.c:1646  */
+#line 2170 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 412 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 421 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new var_para_list_s);
             ((var_para_list_s*)(yyval))->name_list = (name_list_s*)(yyvsp[0]);
 }
-#line 2170 "y.tab.c" /* yacc.c:1646  */
+#line 2179 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 417 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 426 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new val_para_list_s);
             ((val_para_list_s*)(yyval))->name_list = (name_list_s*)(yyvsp[0]);
 }
-#line 2179 "y.tab.c" /* yacc.c:1646  */
+#line 2188 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 422 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 431 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             ////printf("routine_body reduced.\n");
             (yyval) = (char*)(new routine_body_s);
             ((routine_body_s*)(yyval))->compound_stmt = (compound_stmt_s*)(yyvsp[0]);
 }
-#line 2189 "y.tab.c" /* yacc.c:1646  */
+#line 2198 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 428 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 437 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             ////printf("compound_stmt reduced.\n");
             (yyval) = (char*)(new compound_stmt_s);
@@ -2199,28 +2208,28 @@ yyreduce:
                 lst.push_back(p->stmt);
             ////printf("[compound_stmt]the number of stmt: %d\n",(int)lst.size());
 }
-#line 2203 "y.tab.c" /* yacc.c:1646  */
+#line 2212 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 438 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 447 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             ////printf("stmt_list reduced.\n");
             (yyval) = (char*)(new stmt_list_s);
             ((stmt_list_s*)(yyval))->next = (stmt_list_s*)(yyvsp[-2]);
             ((stmt_list_s*)(yyval))->stmt = (stmt_s*)(yyvsp[-1]); }
-#line 2213 "y.tab.c" /* yacc.c:1646  */
+#line 2222 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 443 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 452 "cd_yacc_cgen.y" /* yacc.c:1646  */
     { (yyval) = NULL;
 }
-#line 2220 "y.tab.c" /* yacc.c:1646  */
+#line 2229 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 446 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 455 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             ////printf("stmt reduced.\n");
             (yyval) = (char*)(new stmt_s);
@@ -2229,22 +2238,22 @@ yyreduce:
             ////printf("[stmt]label:%d\n",*((stmt_s*)$$)->INTEGER);
             ((stmt_s*)(yyval))->non_label_stmt = (non_label_stmt_s*)(yyvsp[0]);
        }
-#line 2233 "y.tab.c" /* yacc.c:1646  */
+#line 2242 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 453 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 462 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             ////printf("stmt reduced.\n");
             (yyval) = (char*)(new stmt_s);
             ((stmt_s*)(yyval))->INTEGER = NULL;
             ((stmt_s*)(yyval))->non_label_stmt = (non_label_stmt_s*)(yyvsp[0]);
 }
-#line 2244 "y.tab.c" /* yacc.c:1646  */
+#line 2253 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 460 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 469 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
                ////printf("non_label_stmt reduced.\n");
                (yyval) = (char*)(new non_label_stmt_s);
@@ -2258,11 +2267,11 @@ yyreduce:
                ((non_label_stmt_s*)(yyval))->case_stmt = NULL;
                ((non_label_stmt_s*)(yyval))->goto_stmt = NULL;
  }
-#line 2262 "y.tab.c" /* yacc.c:1646  */
+#line 2271 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 473 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 482 "cd_yacc_cgen.y" /* yacc.c:1646  */
     { 
                ////printf("non_label_stmt reduced.\n");
                (yyval) = (char*)(new non_label_stmt_s);
@@ -2276,11 +2285,11 @@ yyreduce:
                ((non_label_stmt_s*)(yyval))->case_stmt = NULL;
                ((non_label_stmt_s*)(yyval))->goto_stmt = NULL;
 }
-#line 2280 "y.tab.c" /* yacc.c:1646  */
+#line 2289 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 66:
-#line 486 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 495 "cd_yacc_cgen.y" /* yacc.c:1646  */
     { 
                ////printf("non_label_stmt reduced.\n");
                (yyval) = (char*)(new non_label_stmt_s);
@@ -2294,11 +2303,11 @@ yyreduce:
                ((non_label_stmt_s*)(yyval))->case_stmt = NULL;
                ((non_label_stmt_s*)(yyval))->goto_stmt = NULL;
 }
-#line 2298 "y.tab.c" /* yacc.c:1646  */
+#line 2307 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 67:
-#line 499 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 508 "cd_yacc_cgen.y" /* yacc.c:1646  */
     { 
                ////printf("non_label_stmt reduced.\n");
                (yyval) = (char*)(new non_label_stmt_s);
@@ -2312,11 +2321,11 @@ yyreduce:
                ((non_label_stmt_s*)(yyval))->case_stmt = NULL;
                ((non_label_stmt_s*)(yyval))->goto_stmt = NULL;
 }
-#line 2316 "y.tab.c" /* yacc.c:1646  */
+#line 2325 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 512 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 521 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
                ////printf("non_label_stmt reduced.\n");    
                (yyval) = (char*)(new non_label_stmt_s);
@@ -2330,11 +2339,11 @@ yyreduce:
                ((non_label_stmt_s*)(yyval))->case_stmt = NULL;
                ((non_label_stmt_s*)(yyval))->goto_stmt = NULL;
  }
-#line 2334 "y.tab.c" /* yacc.c:1646  */
+#line 2343 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 69:
-#line 525 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 534 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
                ////printf("non_label_stmt reduced.\n");
                (yyval) = (char*)(new non_label_stmt_s);
@@ -2348,11 +2357,11 @@ yyreduce:
                ((non_label_stmt_s*)(yyval))->case_stmt = NULL;
                ((non_label_stmt_s*)(yyval))->goto_stmt = NULL;
  }
-#line 2352 "y.tab.c" /* yacc.c:1646  */
+#line 2361 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 70:
-#line 538 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 547 "cd_yacc_cgen.y" /* yacc.c:1646  */
     { 
                ////printf("non_label_stmt reduced.\n");
                (yyval) = (char*)(new non_label_stmt_s);
@@ -2366,11 +2375,11 @@ yyreduce:
                ((non_label_stmt_s*)(yyval))->case_stmt = NULL;
                ((non_label_stmt_s*)(yyval))->goto_stmt = NULL;
 }
-#line 2370 "y.tab.c" /* yacc.c:1646  */
+#line 2379 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 71:
-#line 551 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 560 "cd_yacc_cgen.y" /* yacc.c:1646  */
     { 
                ////printf("non_label_stmt reduced.\n");
                (yyval) = (char*)(new non_label_stmt_s);
@@ -2384,11 +2393,11 @@ yyreduce:
                ((non_label_stmt_s*)(yyval))->case_stmt = (case_stmt_s*)(yyvsp[0]);
                ((non_label_stmt_s*)(yyval))->goto_stmt = NULL;
 }
-#line 2388 "y.tab.c" /* yacc.c:1646  */
+#line 2397 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 72:
-#line 564 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 573 "cd_yacc_cgen.y" /* yacc.c:1646  */
     { 
                ////printf("non_label_stmt reduced.\n");
                (yyval) = (char*)(new non_label_stmt_s);
@@ -2402,11 +2411,11 @@ yyreduce:
                ((non_label_stmt_s*)(yyval))->case_stmt = NULL;
                ((non_label_stmt_s*)(yyval))->goto_stmt = (goto_stmt_s*)(yyvsp[0]);
 }
-#line 2406 "y.tab.c" /* yacc.c:1646  */
+#line 2415 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 73:
-#line 579 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 588 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
                ////printf("assign_stmt reduced.\n");
                (yyval) = (char*)(new assign_stmt_s);
@@ -2417,11 +2426,11 @@ yyreduce:
                ((assign_stmt_s*)(yyval))->TYPE = 0;
                ////printf("[assign_stmt]%s := expression\n", $1);
             }
-#line 2421 "y.tab.c" /* yacc.c:1646  */
+#line 2430 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 74:
-#line 589 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 598 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
                ////printf("assign_stmt reduced.\n");
                (yyval) = (char*)(new assign_stmt_s);
@@ -2432,11 +2441,11 @@ yyreduce:
                ((assign_stmt_s*)(yyval))->TYPE = 1;
                ////printf("[assign_stmt]%s[expression] := expression\n", $1);
 }
-#line 2436 "y.tab.c" /* yacc.c:1646  */
+#line 2445 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 75:
-#line 599 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 608 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
                ////printf("assign_stmt reduced.\n");
                (yyval) = (char*)(new assign_stmt_s);
@@ -2447,11 +2456,11 @@ yyreduce:
                ((assign_stmt_s*)(yyval))->TYPE = 2;
                ////printf("[assign_stmt]%s.%s := expression\n", $1, $3);
 }
-#line 2451 "y.tab.c" /* yacc.c:1646  */
+#line 2460 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 76:
-#line 610 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 619 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
              ////printf("proc_stmt reduced.\n");    
              (yyval) = (char*)(new proc_stmt_s);
@@ -2460,11 +2469,11 @@ yyreduce:
              ((proc_stmt_s*)(yyval))->readID = "";
              ////printf("[proc_stmt]%s\n", $1);             
         }
-#line 2464 "y.tab.c" /* yacc.c:1646  */
+#line 2473 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 77:
-#line 618 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 627 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
              ////printf("proc_stmt reduced.\n");                
              (yyval) = (char*)(new proc_stmt_s);
@@ -2473,11 +2482,11 @@ yyreduce:
              ((proc_stmt_s*)(yyval))->readID = "";
              ////printf("[proc_stmt]%s(args_list)\n", $1);                          
         }
-#line 2477 "y.tab.c" /* yacc.c:1646  */
+#line 2486 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 78:
-#line 626 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 635 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
              ////printf("proc_stmt reduced.\n");                
              (yyval) = (char*)(new proc_stmt_s);
@@ -2486,11 +2495,11 @@ yyreduce:
              ((proc_stmt_s*)(yyval))->readID = "";
              ////printf("[proc_stmt]%s--SYS_PROC\n", $1);                                       
         }
-#line 2490 "y.tab.c" /* yacc.c:1646  */
+#line 2499 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 79:
-#line 634 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 643 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
              ////printf("proc_stmt reduced.\n");                
              (yyval) = (char*)(new proc_stmt_s);
@@ -2499,51 +2508,51 @@ yyreduce:
              ((proc_stmt_s*)(yyval))->readID = "";
              ////printf("[proc_stmt]%s(args_list)--SYS_PROC\n", $1);                                                    
         }
-#line 2503 "y.tab.c" /* yacc.c:1646  */
+#line 2512 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 80:
-#line 642 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 651 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
              ////printf("proc_stmt reduced.\n");                
              (yyval) = (char*)(new proc_stmt_s);
-             ((proc_stmt_s*)(yyval))->ID = "read";
+             ((proc_stmt_s*)(yyval))->ID = "READ";
              ((proc_stmt_s*)(yyval))->args_list = NULL;
              ((proc_stmt_s*)(yyval))->readID = string((yyvsp[-1]));
              ////printf("[proc_stmt]READ(%s)--READ\n", $1);                                                                 
 }
-#line 2516 "y.tab.c" /* yacc.c:1646  */
+#line 2525 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 81:
-#line 651 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 660 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
              (yyval) = (char*)(new if_stmt_s);
              ((if_stmt_s*)(yyval))->expression = (expression_s*)(yyvsp[-3]);
              ((if_stmt_s*)(yyval))->compound_stmt = (compound_stmt_s*)(yyvsp[-1]);
              ((if_stmt_s*)(yyval))->else_clause = (else_clause_s*)(yyvsp[0]);
 }
-#line 2527 "y.tab.c" /* yacc.c:1646  */
+#line 2536 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 82:
-#line 658 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 667 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new else_clause_s);
             ((else_clause_s*)(yyval))->compound_stmt = (compound_stmt_s*)(yyvsp[0]);
         }
-#line 2536 "y.tab.c" /* yacc.c:1646  */
+#line 2545 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 83:
-#line 661 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 670 "cd_yacc_cgen.y" /* yacc.c:1646  */
     { (yyval) = NULL;
 }
-#line 2543 "y.tab.c" /* yacc.c:1646  */
+#line 2552 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 84:
-#line 664 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 673 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new repeat_stmt_s);
             ((repeat_stmt_s*)(yyval))->expression = (expression_s*)(yyvsp[0]);
@@ -2552,21 +2561,21 @@ yyreduce:
             for(stmt_list_s* p = (stmt_list_s*)(yyvsp[-2]); p; p=p->next)
                 lst.push_back(p->stmt);
 }
-#line 2556 "y.tab.c" /* yacc.c:1646  */
+#line 2565 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 85:
-#line 673 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 682 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new while_stmt_s);
             ((while_stmt_s*)(yyval))->expression = (expression_s*)(yyvsp[-2]);
             ((while_stmt_s*)(yyval))->compound_stmt = (compound_stmt_s*)(yyvsp[0]);
  }
-#line 2566 "y.tab.c" /* yacc.c:1646  */
+#line 2575 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 86:
-#line 679 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 688 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new for_stmt_s);
             ((for_stmt_s*)(yyval))->ID = string((yyvsp[-6]));
@@ -2576,29 +2585,29 @@ yyreduce:
             ((for_stmt_s*)(yyval))->compound_stmt = (compound_stmt_s*)(yyvsp[0]);
             //printf("for_stmt reduced.\n");
  }
-#line 2580 "y.tab.c" /* yacc.c:1646  */
+#line 2589 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 87:
-#line 689 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 698 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new direction_s);
             ((direction_s*)(yyval))->dir = 0;
          }
-#line 2589 "y.tab.c" /* yacc.c:1646  */
+#line 2598 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 88:
-#line 692 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 701 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new direction_s);
             ((direction_s*)(yyval))->dir = 1;
 }
-#line 2598 "y.tab.c" /* yacc.c:1646  */
+#line 2607 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 89:
-#line 697 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 706 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new case_stmt_s);
             ((case_stmt_s*)(yyval))->expression = (expression_s*)(yyvsp[-3]);
@@ -2607,31 +2616,31 @@ yyreduce:
             for(case_expr_list_s* p = (case_expr_list_s*)(yyvsp[-1]); p; p=p->next)
                 lst.push_back(p->case_expr);
 }
-#line 2611 "y.tab.c" /* yacc.c:1646  */
+#line 2620 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 90:
-#line 706 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 715 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new case_expr_list_s);
             ((case_expr_list_s*)(yyval))->next= (case_expr_list_s*)(yyvsp[-1]);
             ((case_expr_list_s*)(yyval))->case_expr = (case_expr_s*)(yyvsp[0]);
        }
-#line 2621 "y.tab.c" /* yacc.c:1646  */
+#line 2630 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 91:
-#line 710 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 719 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new case_expr_list_s);
             ((case_expr_list_s*)(yyval))->next = NULL;
             ((case_expr_list_s*)(yyval))->case_expr = (case_expr_s*)(yyvsp[0]);
 }
-#line 2631 "y.tab.c" /* yacc.c:1646  */
+#line 2640 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 92:
-#line 716 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 725 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new case_expr_s);
             ((case_expr_s*)(yyval))->const_value = (const_value_s*)(yyvsp[-3]);
@@ -2639,31 +2648,31 @@ yyreduce:
             ((case_expr_s*)(yyval))->ID = NULL;
 
           }
-#line 2643 "y.tab.c" /* yacc.c:1646  */
+#line 2652 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 93:
-#line 722 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 731 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new case_expr_s);
             ((case_expr_s*)(yyval))->ID = new string((yyvsp[-3]));
             ((case_expr_s*)(yyval))->const_value = NULL;
             ((case_expr_s*)(yyval))->stmt = (stmt_s*)(yyvsp[-1]);
 }
-#line 2654 "y.tab.c" /* yacc.c:1646  */
+#line 2663 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 94:
-#line 729 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 738 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new goto_stmt_s);
             ((goto_stmt_s*)(yyval))->INTEGER = str2int(string((yyvsp[0])));
 }
-#line 2663 "y.tab.c" /* yacc.c:1646  */
+#line 2672 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 95:
-#line 734 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 743 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             ////printf("expression GE reduced.\n");
             (yyval) = (char*)(new expression_s);
@@ -2671,11 +2680,11 @@ yyreduce:
             ((expression_s*)(yyval))->next = (expression_s*)(yyvsp[-2]);
             ((expression_s*)(yyval))->expr = (expr_s*)(yyvsp[0]);
          }
-#line 2675 "y.tab.c" /* yacc.c:1646  */
+#line 2684 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 96:
-#line 740 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 749 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             ////printf("expression GT reduced.\n");
             (yyval) = (char*)(new expression_s);
@@ -2683,11 +2692,11 @@ yyreduce:
             ((expression_s*)(yyval))->next = (expression_s*)(yyvsp[-2]);
             ((expression_s*)(yyval))->expr = (expr_s*)(yyvsp[0]);
          }
-#line 2687 "y.tab.c" /* yacc.c:1646  */
+#line 2696 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 97:
-#line 746 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 755 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             ////printf("expression LE reduced.\n");
             (yyval) = (char*)(new expression_s);
@@ -2695,11 +2704,11 @@ yyreduce:
             ((expression_s*)(yyval))->next = (expression_s*)(yyvsp[-2]);
             ((expression_s*)(yyval))->expr = (expr_s*)(yyvsp[0]);
          }
-#line 2699 "y.tab.c" /* yacc.c:1646  */
+#line 2708 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 98:
-#line 752 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 761 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             ////printf("expression LT reduced.\n");
             (yyval) = (char*)(new expression_s);
@@ -2707,11 +2716,11 @@ yyreduce:
             ((expression_s*)(yyval))->next = (expression_s*)(yyvsp[-2]);
             ((expression_s*)(yyval))->expr = (expr_s*)(yyvsp[0]);
          }
-#line 2711 "y.tab.c" /* yacc.c:1646  */
+#line 2720 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 99:
-#line 758 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 767 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             ////printf("expression EQUAL reduced.\n");
             (yyval) = (char*)(new expression_s);
@@ -2719,11 +2728,11 @@ yyreduce:
             ((expression_s*)(yyval))->next = (expression_s*)(yyvsp[-2]);
             ((expression_s*)(yyval))->expr = (expr_s*)(yyvsp[0]);
          }
-#line 2723 "y.tab.c" /* yacc.c:1646  */
+#line 2732 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 100:
-#line 764 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 773 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             ////printf("expression UNEQUAL reduced.\n");
             (yyval) = (char*)(new expression_s);
@@ -2731,11 +2740,11 @@ yyreduce:
             ((expression_s*)(yyval))->next = (expression_s*)(yyvsp[-2]);
             ((expression_s*)(yyval))->expr = (expr_s*)(yyvsp[0]);
          }
-#line 2735 "y.tab.c" /* yacc.c:1646  */
+#line 2744 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 101:
-#line 770 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 779 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new expression_s);
             ((expression_s*)(yyval))->TYPE = expression_s::NULL_OPERATOR;
@@ -2743,11 +2752,11 @@ yyreduce:
             ((expression_s*)(yyval))->expr = (expr_s*)(yyvsp[0]);
             ////printf("expression (expr) reduced.\n");
 }
-#line 2747 "y.tab.c" /* yacc.c:1646  */
+#line 2756 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 102:
-#line 778 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 787 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             //printf("expr (+) reduced.\n");
             (yyval) = (char*)(new expr_s);
@@ -2755,11 +2764,11 @@ yyreduce:
             ((expr_s*)(yyval))->next = (expr_s*)(yyvsp[-2]);
             ((expr_s*)(yyval))->term = (term_s*)(yyvsp[0]);
     }
-#line 2759 "y.tab.c" /* yacc.c:1646  */
+#line 2768 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 103:
-#line 784 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 793 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             //printf("expr (-) reduced.\n");
             (yyval) = (char*)(new expr_s);
@@ -2767,11 +2776,11 @@ yyreduce:
             ((expr_s*)(yyval))->next = (expr_s*)(yyvsp[-2]);
             ((expr_s*)(yyval))->term = (term_s*)(yyvsp[0]);
     }
-#line 2771 "y.tab.c" /* yacc.c:1646  */
+#line 2780 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 104:
-#line 790 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 799 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             //printf("expr (OR) reduced.\n");            
             (yyval) = (char*)(new expr_s);
@@ -2779,11 +2788,11 @@ yyreduce:
             ((expr_s*)(yyval))->next = (expr_s*)(yyvsp[-2]);
             ((expr_s*)(yyval))->term = (term_s*)(yyvsp[0]);
     }
-#line 2783 "y.tab.c" /* yacc.c:1646  */
+#line 2792 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 105:
-#line 796 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 805 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             //printf("expr (term) reduced.\n");
             (yyval) = (char*)(new expr_s);
@@ -2791,11 +2800,11 @@ yyreduce:
             ((expr_s*)(yyval))->next = NULL;
             ((expr_s*)(yyval))->term = (term_s*)(yyvsp[0]);
 }
-#line 2795 "y.tab.c" /* yacc.c:1646  */
+#line 2804 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 106:
-#line 804 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 813 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             //printf("term (*) reduced.\n");
             (yyval) = (char*)(new term_s);
@@ -2803,11 +2812,11 @@ yyreduce:
             ((term_s*)(yyval))->next = (term_s*)(yyvsp[-2]);
             ((term_s*)(yyval))->factor = (factor_s*)(yyvsp[0]);
    }
-#line 2807 "y.tab.c" /* yacc.c:1646  */
+#line 2816 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 107:
-#line 810 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 819 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             //printf("term (/) reduced.\n");            
             (yyval) = (char*)(new term_s);
@@ -2815,11 +2824,11 @@ yyreduce:
             ((term_s*)(yyval))->next = (term_s*)(yyvsp[-2]);
             ((term_s*)(yyval))->factor = (factor_s*)(yyvsp[0]);
    }
-#line 2819 "y.tab.c" /* yacc.c:1646  */
+#line 2828 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 108:
-#line 816 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 825 "cd_yacc_cgen.y" /* yacc.c:1646  */
     { 
             //printf("term (MOD) reduced.\n");            
             (yyval) = (char*)(new term_s);
@@ -2827,11 +2836,11 @@ yyreduce:
             ((term_s*)(yyval))->next = (term_s*)(yyvsp[-2]);
             ((term_s*)(yyval))->factor = (factor_s*)(yyvsp[0]);
    }
-#line 2831 "y.tab.c" /* yacc.c:1646  */
+#line 2840 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 109:
-#line 822 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 831 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             //printf("term (AND) reduced.\n");                        
             (yyval) = (char*)(new term_s);
@@ -2839,11 +2848,11 @@ yyreduce:
             ((term_s*)(yyval))->next = (term_s*)(yyvsp[-2]);
             ((term_s*)(yyval))->factor = (factor_s*)(yyvsp[0]);
    }
-#line 2843 "y.tab.c" /* yacc.c:1646  */
+#line 2852 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 110:
-#line 828 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 837 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             //printf("term (factor) reduced.\n");                        
             (yyval) = (char*)(new term_s);
@@ -2851,11 +2860,11 @@ yyreduce:
             ((term_s*)(yyval))->next = NULL;
             ((term_s*)(yyval))->factor = (factor_s*)(yyvsp[0]);
 }
-#line 2855 "y.tab.c" /* yacc.c:1646  */
+#line 2864 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 111:
-#line 836 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 845 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             //printf("factor (ID) reduced.\n");                        
             (yyval) = (char*)(new factor_s);
@@ -2868,11 +2877,11 @@ yyreduce:
             ((factor_s*)(yyval))->next = NULL;
             //printf("[factor]%s\n",((factor_s*)$$)->ID.c_str());
      }
-#line 2872 "y.tab.c" /* yacc.c:1646  */
+#line 2881 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 112:
-#line 847 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 856 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             ////printf("factor reduced.\n");                        
             (yyval) = (char*)(new factor_s);
@@ -2885,11 +2894,11 @@ yyreduce:
             ((factor_s*)(yyval))->next = NULL;
             ////printf("[factor]%s(args_list)\n",((factor_s*)$$)->ID.c_str());            
      }
-#line 2889 "y.tab.c" /* yacc.c:1646  */
+#line 2898 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 113:
-#line 858 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 867 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             ////printf("factor reduced.\n");                        
             (yyval) = (char*)(new factor_s);
@@ -2902,11 +2911,11 @@ yyreduce:
             ((factor_s*)(yyval))->next = NULL;
             ////printf("[factor]%s---SYS_FUNC\n",((factor_s*)$$)->ID.c_str());                        
      }
-#line 2906 "y.tab.c" /* yacc.c:1646  */
+#line 2915 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 114:
-#line 869 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 878 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new factor_s);
             ((factor_s*)(yyval))->TYPE = factor_s::SYS_FUNCT_WITH_ARGS;
@@ -2919,11 +2928,11 @@ yyreduce:
             ////printf("factor reduced.\n");
             ////printf("[factor]%s(args_list)---SYS_FUNC\n",((factor_s*)$$)->ID.c_str());                                    
      }
-#line 2923 "y.tab.c" /* yacc.c:1646  */
+#line 2932 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 115:
-#line 880 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 889 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new factor_s);
             ((factor_s*)(yyval))->TYPE = factor_s::CONST_VALUE;
@@ -2935,11 +2944,11 @@ yyreduce:
             ((factor_s*)(yyval))->next = NULL;
             //printf("factor (const_value) reduced.\n");
      }
-#line 2939 "y.tab.c" /* yacc.c:1646  */
+#line 2948 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 116:
-#line 890 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 899 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new factor_s);
             ((factor_s*)(yyval))->TYPE = factor_s::EXPRESSION;
@@ -2951,11 +2960,11 @@ yyreduce:
             ((factor_s*)(yyval))->next = NULL;
             //printf("factor (expression) reduced.\n");            
      }
-#line 2955 "y.tab.c" /* yacc.c:1646  */
+#line 2964 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 117:
-#line 900 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 909 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new factor_s);
             ((factor_s*)(yyval))->TYPE = factor_s::NOT_FACTOR;
@@ -2967,11 +2976,11 @@ yyreduce:
             ((factor_s*)(yyval))->next = (factor_s*)(yyvsp[0]);
             ////printf("factor (NOT factor) reduced.\n");            
      }
-#line 2971 "y.tab.c" /* yacc.c:1646  */
+#line 2980 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 118:
-#line 910 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 919 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new factor_s);
             ((factor_s*)(yyval))->TYPE = factor_s::NOT_FACTOR;
@@ -2983,11 +2992,11 @@ yyreduce:
             ((factor_s*)(yyval))->next = (factor_s*)(yyvsp[0]);
             //printf("factor (-factor) reduced.\n");            
      }
-#line 2987 "y.tab.c" /* yacc.c:1646  */
+#line 2996 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 119:
-#line 920 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 929 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new factor_s);
             ((factor_s*)(yyval))->TYPE = factor_s::ID_WITH_EXPRESSION;
@@ -2999,11 +3008,11 @@ yyreduce:
             ((factor_s*)(yyval))->next = NULL;
             ////printf("factor %s[expression] reduced.\n",((factor_s*)$$)->ID.c_str());            
      }
-#line 3003 "y.tab.c" /* yacc.c:1646  */
+#line 3012 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 120:
-#line 930 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 939 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new factor_s);
             ((factor_s*)(yyval))->TYPE = factor_s::ID_DOT_ID_TYPE;
@@ -3015,31 +3024,31 @@ yyreduce:
             ((factor_s*)(yyval))->next = NULL;
             ////printf("factor %s.%s reduced.\n",((factor_s*)$$)->ID_DOT_ID->first.c_str(),((factor_s*)$$)->ID_DOT_ID->second.c_str());                        
 }
-#line 3019 "y.tab.c" /* yacc.c:1646  */
+#line 3028 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 121:
-#line 942 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 951 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new args_list_s);
             ((args_list_s*)(yyval))->next = (args_list_s*)(yyvsp[-2]);
             ((args_list_s*)(yyval))->expression = (expression_s*)(yyvsp[0]);
          }
-#line 3029 "y.tab.c" /* yacc.c:1646  */
+#line 3038 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 122:
-#line 946 "cd_yacc_cgen.y" /* yacc.c:1646  */
+#line 955 "cd_yacc_cgen.y" /* yacc.c:1646  */
     {
             (yyval) = (char*)(new args_list_s);
             ((args_list_s*)(yyval))->next = NULL;
             ((args_list_s*)(yyval))->expression = (expression_s*)(yyvsp[0]);
 }
-#line 3039 "y.tab.c" /* yacc.c:1646  */
+#line 3048 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 3043 "y.tab.c" /* yacc.c:1646  */
+#line 3052 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -3267,7 +3276,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 952 "cd_yacc_cgen.y" /* yacc.c:1906  */
+#line 961 "cd_yacc_cgen.y" /* yacc.c:1906  */
 
 
 

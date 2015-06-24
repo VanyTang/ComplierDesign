@@ -52,7 +52,7 @@ NQUOTE	[^']
 "]"		return(_RB);
 "." 	        return(_DOT);
 ":"		return(_COLON);
-","		return(_COMMA);
+","		return(_COMMA_SIGN);
 ";"		return(_SEMI);
 "*"		return(_MUL);
 "+"		return(_PLUS);

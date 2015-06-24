@@ -893,7 +893,7 @@ return(_COLON);
 case 7:
 YY_RULE_SETUP
 #line 55 "cd_lex_yacc.l"
-return(_COMMA);
+return(_COMMA_SIGN);
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
