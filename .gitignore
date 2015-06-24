@@ -5,6 +5,5 @@ lex.yy.c
 *~
 mycomp
 *.swp
-Project/codeGenerate/codeGenerate.sdf
 *.opensdf
-Project/codeGenerate/codeGenerate.sdf
+*.sdf
