@@ -51,11 +51,13 @@ struct symtab_type_s{
 	symtab_enum_s* enum_type;
 	symtab_systype_s* system_type;
 	symtab_array_s* array_type;
+	symtab_range_s* range_type;
 	int type;
 	//0		system type such as integer and char
 	//1		array
 	//2		record
 	//3		enumerated
+	//4		rang_type
 };
 
 struct symtab_variable_s{
