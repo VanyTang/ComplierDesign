@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <iostream>
 #include <fstream>
 #include "codeGenerate.h"
 
@@ -21,6 +22,11 @@ void codeGenerate::output(){
 	ofstream fout("output.asm");
 	fout << generateCode;
 	fout.close();
+}
+
+void codeGenerate::exit_with_error(string error){
+	cout << "compile error: " << error << endl;
+	exit(1);
 }
 
 string codeGenerate::generate_program(symtab_function_block_s* func, program_s* program){
@@ -108,14 +114,107 @@ string codeGenerate::generate_type_part(symtab_function_block_s* func, type_part
 		symtab_type_s* symtab_type = new symtab_type_s;
 		if ((*iter)->type_decl->array_type_decl != NULL){
 			symtab_type->array_type = new symtab_array_s;
-			if ((*iter)->type_decl->array_type_decl->type_decl->simple_type_decl->SYS_TYPE == )
-				symtab_type->array_type->type.type = symtab_systype_s::
-			
+			symtab_type->enum_type = NULL;
+			symtab_type->record_type = NULL;
+			symtab_type->system_type = NULL;
+			symtab_type->range_type = NULL;
+			symtab_type->type = 1;	//array type
+			//assign the array type
+			if ((*iter)->type_decl->array_type_decl->type_decl->simple_type_decl->SYS_TYPE_NAME == "INTEGER"){
+				symtab_type->array_type->type.type = symtab_systype_s::INTEGER;
+			}
+			else if ((*iter)->type_decl->array_type_decl->type_decl->simple_type_decl->SYS_TYPE_NAME == "CHAR"){
+				symtab_type->array_type->type.type = symtab_systype_s::CHAR;
+			}
+			else if ((*iter)->type_decl->array_type_decl->type_decl->simple_type_decl->SYS_TYPE_NAME == "REAL"){
+				symtab_type->array_type->type.type = symtab_systype_s::REAL;
+			}
+			else if ((*iter)->type_decl->array_type_decl->type_decl->simple_type_decl->SYS_TYPE_NAME == "BOOLEAN"){
+				symtab_type->array_type->type.type = symtab_systype_s::BOOLEAN;
+			}
+			//index type
+			if ((*iter)->type_decl->array_type_decl->type_decl->simple_type_decl->TYPE == simple_type_decl_s::RANGE_TYPE){
+				symtab_type->array_type->index_type 
+					= (*iter)->type_decl->array_type_decl->type_decl->simple_type_decl->isChar;
+				if ((*iter)->type_decl->array_type_decl->type_decl->simple_type_decl->MAX <=
+					(*iter)->type_decl->array_type_decl->type_decl->simple_type_decl->MIN){
+					exit_with_error("range is not allowed from bigger one to smaller one");
+				}
+				if (symtab_type->array_type->index_type == 0){
+					symtab_type->array_type->index_range->up.int_up
+						= (*iter)->type_decl->array_type_decl->type_decl->simple_type_decl->MAX;
+					symtab_type->array_type->index_range->down.int_down
+						= (*iter)->type_decl->array_type_decl->type_decl->simple_type_decl->MIN;
+				}
+				else if (symtab_type->array_type->index_type == 1){
+					symtab_type->array_type->index_range->up.char_up
+						= (char)((*iter)->type_decl->array_type_decl->type_decl->simple_type_decl->MAX);
+					symtab_type->array_type->index_range->down.char_down
+						= (char)((*iter)->type_decl->array_type_decl->type_decl->simple_type_decl->MIN);
+				}
+				else{
+					exit_with_error("Array declaration is wrong because of the array index expression");
+				}
+			}
+			else if ((*iter)->type_decl->array_type_decl->type_decl->simple_type_decl->TYPE == simple_type_decl_s::ID_TYPE){
+				vector<string>::iterator idIter;
+				for (idIter = (*iter)->type_decl->array_type_decl->type_decl->simple_type_decl->ID.end() - 1;
+					idIter != (*iter)->type_decl->array_type_decl->type_decl->simple_type_decl->ID.begin() - 1; idIter--){
+					if (func->type_table.find(*idIter)->second->enum_type == NULL){
+						stringstream err;
+						err.clear(); err.str("");
+						err << (*idIter) << "is not a enum type";
+						exit_with_error(err.str());
+					}
+					symtab_type->array_type->index_enum = func->type_table.find(*idIter)->second->enum_type;
+				}
+			}
+			//index error
+			else{
+				exit_with_error("this index expression type of array declaration is not supported!");
+			}
 		}
 		else if ((*iter)->type_decl->record_type_decl != NULL){
+			symtab_type->record_type = new symtab_record_s;
+			symtab_type->array_type == NULL;
+			symtab_type->enum_type == NULL;
+			symtab_type->range_type == NULL;
+			symtab_type->system_type == NULL;
+			symtab_type->record_type->size = 0;
+			vector<field_decl_s*>::iterator fieldIter;
+			int 
+			for (fieldIter = (*iter)->type_decl->record_type_decl->field_decl.end() - 1;
+				fieldIter != (*iter)->type_decl->record_type_decl->field_decl.begin() - 1; fieldIter--){
+				symtab_systype_s* symtab_systype = new symtab_systype_s;
+				if ((*fieldIter)->type_decl->simple_type_decl == NULL){
+					exit_with_error("record type declaration doesn't support complicated type");
+				}
 
+				//confirm the type of the namelist
+				if ((*fieldIter)->type_decl->simple_type_decl->SYS_TYPE_NAME == "INTEGER")
+				{
+					symtab_systype->type = symtab_systype_s::INTEGER;
+				}
+				else if ((*fieldIter)->type_decl->simple_type_decl->SYS_TYPE_NAME == "CHAR"){
+					symtab_systype->type = symtab_systype_s::CHAR;
+				}
+				else if ((*fieldIter)->type_decl->simple_type_decl->SYS_TYPE_NAME == "REAL"){
+					symtab_systype->type = symtab_systype_s::REAL;
+				}
+				else if ((*fieldIter)->type_decl->simple_type_decl->SYS_TYPE_NAME == "BOOLEAN"){
+					symtab_systype->type = symtab_systype_s::BOOLEAN;
+				}
+				
+				vector<string>::iterator nameIter;
+				for (nameIter = (*fieldIter)->name_list.end() - 1; 
+					nameIter != (*fieldIter)->name_list.begin() - 1; nameIter--){
+
+				}
+				symtab_type->record_type->component.insert(pair<string,symtab_systype_s*>());
+			}
 		}
 		else if ((*iter)->type_decl->simple_type_decl != NULL){
+			symtab_type_s* symtab_type = new symtab_type_s;
 
 		}
 
