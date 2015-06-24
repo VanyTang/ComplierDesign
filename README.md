@@ -31,7 +31,8 @@ cd_yacc_node.h中struct simple_type_decl_s;
                 	     |  ID  DOTDOT  ID
 可以通过判ID这个vector是否为空来判断是否是ID DOTDOT ID产生式，否则是其他三个产生式（其值存储在MIN,MAX）中
 
-case语句中label和case前面的int可能产生歧义？
+case语句中label和case前面的int可能产生歧义？不会
+
 
 ## 关于测试数据testcode
 

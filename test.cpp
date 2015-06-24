@@ -355,7 +355,6 @@ void array_type_decl(array_type_decl_s* node)
     simple_type_decl(node->simple_type_decl);
     cout << " ] OF ";
     type_decl(node->type_decl);
-    cout << endl;
 }
 void simple_type_decl(simple_type_decl_s* node)
 {
@@ -369,14 +368,19 @@ void simple_type_decl(simple_type_decl_s* node)
         vector<string>::reverse_iterator p;
         for(p = node->ID.rbegin(); p!=node->ID.rend();++p)
                 cout << *p << ",";
-        cout << ")";
+        cout << "\b)";
     }
     else if(node->TYPE==simple_type_decl_s::RANGE_TYPE)
     {
         if(node->ID.size()!=0)//ID..ID
             cout << node->ID[0] << ".." << node->ID[1];
         else // (+-)value..(+-)value
-            cout << node->MIN << ".." << node->MAX;
+        {
+            if(!node->isChar)
+                cout << node->MIN << ".." << node->MAX;
+            else
+                cout << '\'' << (char)node->MIN << "\'..\'" << (char)node->MAX << '\'';
+        }
     }
 }
 void type_decl(type_decl_s* node)

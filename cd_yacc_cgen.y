@@ -36,7 +36,11 @@
 
         inline char str2char(const string& str)
         {
-            if(str.length()!=1) yyerror("invalid convertion from string to char");
+            if(str.length()!=1)
+            {
+                yyerror("invalid convertion from string to char");
+                return '\0';
+            }
             return str[0];
         }
 %}
@@ -105,11 +109,13 @@ const_value : _INTEGER_NUM
                     //printf("const value (REAL %s) reduced.\n",((const_value_s*)$$)->VALUE.c_str()); 
                     }
             | _CHAR_NUM 
-                { $$ = (char*)(new const_value_s); ((const_value_s*)$$)->VALUE = string($1); ((const_value_s*)$$)->TYPE = const_value_s::CHAR;
+                { $$ = (char*)(new const_value_s); ((const_value_s*)$$)->TYPE = const_value_s::CHAR;
+                  string strtmp = string($1);((const_value_s*)$$)->VALUE = strtmp.substr(1,strtmp.size()-2);
                     //printf("const value (CHAR %s) reduced.\n",((const_value_s*)$$)->VALUE.c_str()); 
                     }
             | _STRING_NUM 
-                { $$ = (char*)(new const_value_s); ((const_value_s*)$$)->VALUE = string($1); ((const_value_s*)$$)->TYPE = const_value_s::STRING;
+                { $$ = (char*)(new const_value_s); ((const_value_s*)$$)->TYPE = const_value_s::STRING;
+                  string strtmp = string($1);((const_value_s*)$$)->VALUE = strtmp.substr(1,strtmp.size()-2);
                     //printf("const value (STRING %s) reduced.\n",((const_value_s*)$$)->VALUE.c_str()); 
                     }
 ;
@@ -178,7 +184,7 @@ simple_type_decl :  _SYS_TYPE {
                     ((simple_type_decl_s*)$$)->TYPE = simple_type_decl_s::RANGE_TYPE;
 
                     const_value_s 
-                        *a = (const_value_s*)$1, *b = (const_value_s*)$2;
+                        *a = (const_value_s*)$1, *b = (const_value_s*)$4;
                     if(a->TYPE!=b->TYPE)
                         yyerror("different type in RANGE declaration");
                     else if(a->TYPE==const_value_s::REAL)
@@ -232,7 +238,7 @@ simple_type_decl :  _SYS_TYPE {
                     ((simple_type_decl_s*)$$)->TYPE = simple_type_decl_s::ENUM_TYPE;
                     vector<string>& lstID = ((simple_type_decl_s*)$$)->ID;
                     lstID.clear();
-                    for(name_list_s* p = (name_list_s*)$1; p; p=p->next)
+                    for(name_list_s* p = (name_list_s*)$2; p; p=p->next)
                         lstID.push_back(p->ID);
                         
 };
