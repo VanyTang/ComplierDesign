@@ -68,11 +68,13 @@ void factor(factor_s* node)
             const_value(node->const_value);
             break;
         case factor_s::EXPRESSION:
+            cout << "(";
             expression(node->expression);
+            cout << ")";
             break;
         case factor_s::ID_WITH_EXPRESSION:
             cout << node->ID << "[";
-            args_list(node->args_list);
+            expression(node->expression);
             cout<< "]";
             break;
         case factor_s::ID_DOT_ID_TYPE:
@@ -168,9 +170,9 @@ void stmt(stmt_s* node)
     }
     else if(p->if_stmt!=NULL)
     {
-        cout << "IF ";
+        cout << "IF (";
         expression(p->if_stmt->expression);
-        cout << " THEN" << endl;
+        cout << ") THEN" << endl;
         compound_stmt(p->if_stmt->compound_stmt);
         if(p->if_stmt->else_clause!=NULL)
         {

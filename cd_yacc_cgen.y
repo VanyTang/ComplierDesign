@@ -50,19 +50,19 @@
 %%
 
 program : program_head routine _DOT{
-        //printf("program reduced.\n");
+        ////printf("program reduced.\n");
         finished = true;
 	    $$ = (char*)&program;
         ((program_s*)$$)->ID = ((program_head_s*)$1)->ID;
 	    ((program_s*)$$)->routine = (routine_s*)$2;
 };
 program_head : _PROGRAM _ID _SEMI{
-        //printf("program_head %s reduced.\n",$2);
+        ////printf("program_head %s reduced.\n",$2);
         $$ = (char*)(new program_head_s);
         ((program_head_s*)$$)->ID = string($2);
 };
 routine : routine_head  routine_body {
-        //printf("routine reduced.\n");
+        ////printf("routine reduced.\n");
         $$ = (char*)(new routine_s);
         ((routine_s*)$$)->routine_head = (routine_head_s*)$1;
         ((routine_s*)$$)->routine_body = (routine_body_s*)$2;
@@ -320,7 +320,7 @@ routine_part :  routine_part  function_decl {
                 ((routine_part_s*)$$)->function_decl = NULL;
              }
              |  function_decl {
-                printf("function_decl reduced.\n");
+                //printf("function_decl reduced.\n");
                 $$ = (char*)(new routine_part_s);
                 ((routine_part_s*)$$)->next = NULL;
                 ((routine_part_s*)$$)->procedure_decl = NULL;
@@ -343,7 +343,7 @@ function_decl : function_head _SEMI routine _SEMI {
 };
 
 function_head : _FUNCTION _ID parameters _COLON simple_type_decl {
-                printf("function_head reduced.\n");
+                //printf("function_head reduced.\n");
                 $$ = (char*)(new function_head_s);
                 ((function_head_s*)$$)->ID = string($2);
                 ((function_head_s*)$$)->parameters = (parameters_s*)$3;
@@ -410,23 +410,23 @@ val_para_list : name_list {
 };
 
 routine_body : compound_stmt {
-            //printf("routine_body reduced.\n");
+            ////printf("routine_body reduced.\n");
             $$ = (char*)(new routine_body_s);
             ((routine_body_s*)$$)->compound_stmt = (compound_stmt_s*)$1;
 };
 
 compound_stmt : _BEGIN stmt_list _END {
-            //printf("compound_stmt reduced.\n");
+            ////printf("compound_stmt reduced.\n");
             $$ = (char*)(new compound_stmt_s);
             vector<stmt_s*> &lst = ((compound_stmt_s*)$$)->stmt;
             lst.clear();
             for(stmt_list_s* p = (stmt_list_s*)$2; p; p=p->next)
                 lst.push_back(p->stmt);
-            //printf("[compound_stmt]the number of stmt: %d\n",(int)lst.size());
+            ////printf("[compound_stmt]the number of stmt: %d\n",(int)lst.size());
 };
 
 stmt_list : stmt_list stmt _SEMI {
-            //printf("stmt_list reduced.\n");
+            ////printf("stmt_list reduced.\n");
             $$ = (char*)(new stmt_list_s);
             ((stmt_list_s*)$$)->next = (stmt_list_s*)$1;
             ((stmt_list_s*)$$)->stmt = (stmt_s*)$2; }
@@ -434,21 +434,21 @@ stmt_list : stmt_list stmt _SEMI {
 };
 
 stmt : _INTEGER_NUM _COLON non_label_stmt {
-            //printf("stmt reduced.\n");
+            ////printf("stmt reduced.\n");
             $$ = (char*)(new stmt_s);
             ((stmt_s*)$$)->INTEGER = new int;
             *(((stmt_s*)$$)->INTEGER) = str2int(string($1));
-            //printf("[stmt]label:%d\n",*((stmt_s*)$$)->INTEGER);
+            ////printf("[stmt]label:%d\n",*((stmt_s*)$$)->INTEGER);
             ((stmt_s*)$$)->non_label_stmt = (non_label_stmt_s*)$3;
        } | non_label_stmt {
-            //printf("stmt reduced.\n");
+            ////printf("stmt reduced.\n");
             $$ = (char*)(new stmt_s);
             ((stmt_s*)$$)->INTEGER = NULL;
             ((stmt_s*)$$)->non_label_stmt = (non_label_stmt_s*)$1;
 };
 
 non_label_stmt : assign_stmt {
-               //printf("non_label_stmt reduced.\n");
+               ////printf("non_label_stmt reduced.\n");
                $$ = (char*)(new non_label_stmt_s);
                ((non_label_stmt_s*)$$)->assign_stmt = (assign_stmt_s*)$1;
                ((non_label_stmt_s*)$$)->proc_stmt = NULL;
@@ -461,7 +461,7 @@ non_label_stmt : assign_stmt {
                ((non_label_stmt_s*)$$)->goto_stmt = NULL;
  }
 | proc_stmt { 
-               //printf("non_label_stmt reduced.\n");
+               ////printf("non_label_stmt reduced.\n");
                $$ = (char*)(new non_label_stmt_s);
                ((non_label_stmt_s*)$$)->assign_stmt = NULL;
                ((non_label_stmt_s*)$$)->proc_stmt = (proc_stmt_s*)$1;
@@ -474,7 +474,7 @@ non_label_stmt : assign_stmt {
                ((non_label_stmt_s*)$$)->goto_stmt = NULL;
 }
 | compound_stmt { 
-               //printf("non_label_stmt reduced.\n");
+               ////printf("non_label_stmt reduced.\n");
                $$ = (char*)(new non_label_stmt_s);
                ((non_label_stmt_s*)$$)->assign_stmt = NULL;
                ((non_label_stmt_s*)$$)->proc_stmt = NULL;
@@ -487,7 +487,7 @@ non_label_stmt : assign_stmt {
                ((non_label_stmt_s*)$$)->goto_stmt = NULL;
 }
 | if_stmt { 
-               //printf("non_label_stmt reduced.\n");
+               ////printf("non_label_stmt reduced.\n");
                $$ = (char*)(new non_label_stmt_s);
                ((non_label_stmt_s*)$$)->assign_stmt = NULL;
                ((non_label_stmt_s*)$$)->proc_stmt = NULL;
@@ -500,7 +500,7 @@ non_label_stmt : assign_stmt {
                ((non_label_stmt_s*)$$)->goto_stmt = NULL;
 }
 | repeat_stmt {
-               //printf("non_label_stmt reduced.\n");    
+               ////printf("non_label_stmt reduced.\n");    
                $$ = (char*)(new non_label_stmt_s);
                ((non_label_stmt_s*)$$)->assign_stmt = NULL;
                ((non_label_stmt_s*)$$)->proc_stmt = NULL;
@@ -513,7 +513,7 @@ non_label_stmt : assign_stmt {
                ((non_label_stmt_s*)$$)->goto_stmt = NULL;
  } 
 | while_stmt {
-               //printf("non_label_stmt reduced.\n");
+               ////printf("non_label_stmt reduced.\n");
                $$ = (char*)(new non_label_stmt_s);
                ((non_label_stmt_s*)$$)->assign_stmt = NULL;
                ((non_label_stmt_s*)$$)->proc_stmt = NULL;
@@ -526,7 +526,7 @@ non_label_stmt : assign_stmt {
                ((non_label_stmt_s*)$$)->goto_stmt = NULL;
  }
 | for_stmt { 
-               //printf("non_label_stmt reduced.\n");
+               ////printf("non_label_stmt reduced.\n");
                $$ = (char*)(new non_label_stmt_s);
                ((non_label_stmt_s*)$$)->assign_stmt = NULL;
                ((non_label_stmt_s*)$$)->proc_stmt = NULL;
@@ -539,7 +539,7 @@ non_label_stmt : assign_stmt {
                ((non_label_stmt_s*)$$)->goto_stmt = NULL;
 }
 | case_stmt { 
-               //printf("non_label_stmt reduced.\n");
+               ////printf("non_label_stmt reduced.\n");
                $$ = (char*)(new non_label_stmt_s);
                ((non_label_stmt_s*)$$)->assign_stmt = NULL;
                ((non_label_stmt_s*)$$)->proc_stmt = NULL;
@@ -552,7 +552,7 @@ non_label_stmt : assign_stmt {
                ((non_label_stmt_s*)$$)->goto_stmt = NULL;
 }
 | goto_stmt { 
-               //printf("non_label_stmt reduced.\n");
+               ////printf("non_label_stmt reduced.\n");
                $$ = (char*)(new non_label_stmt_s);
                ((non_label_stmt_s*)$$)->assign_stmt = NULL;
                ((non_label_stmt_s*)$$)->proc_stmt = NULL;
@@ -567,75 +567,75 @@ non_label_stmt : assign_stmt {
 
 
 assign_stmt : _ID  _ASSIGN  expression {
-               //printf("assign_stmt reduced.\n");
+               ////printf("assign_stmt reduced.\n");
                $$ = (char*)(new assign_stmt_s);
                ((assign_stmt_s*)$$)->ID = string($1);
                ((assign_stmt_s*)$$)->expression_idx = NULL;
                ((assign_stmt_s*)$$)->expression = (expression_s*)$3;
                ((assign_stmt_s*)$$)->ID_DOT_ID = NULL;
                ((assign_stmt_s*)$$)->TYPE = 0;
-               //printf("[assign_stmt]%s := expression\n", $1);
+               ////printf("[assign_stmt]%s := expression\n", $1);
             }
            | _ID _LB expression _RB _ASSIGN expression {
-               //printf("assign_stmt reduced.\n");
+               ////printf("assign_stmt reduced.\n");
                $$ = (char*)(new assign_stmt_s);
                ((assign_stmt_s*)$$)->ID = string($1);
                ((assign_stmt_s*)$$)->expression_idx = (expression_s*)$3;
                ((assign_stmt_s*)$$)->expression = (expression_s*)$6;
                ((assign_stmt_s*)$$)->ID_DOT_ID = NULL;
                ((assign_stmt_s*)$$)->TYPE = 1;
-               //printf("[assign_stmt]%s[expression] := expression\n", $1);
+               ////printf("[assign_stmt]%s[expression] := expression\n", $1);
 }
            | _ID  _DOT  _ID  _ASSIGN  expression {
-               //printf("assign_stmt reduced.\n");
+               ////printf("assign_stmt reduced.\n");
                $$ = (char*)(new assign_stmt_s);
                //((assign_stmt_s*)$$)->ID = string($1);
                ((assign_stmt_s*)$$)->expression_idx = NULL;
                ((assign_stmt_s*)$$)->expression = (expression_s*)$4;
                ((assign_stmt_s*)$$)->ID_DOT_ID = new pair<string,string>(string($1),string($3));
                ((assign_stmt_s*)$$)->TYPE = 2;
-               //printf("[assign_stmt]%s.%s := expression\n", $1, $3);
+               ////printf("[assign_stmt]%s.%s := expression\n", $1, $3);
 };
 
 proc_stmt : _ID {
-             //printf("proc_stmt reduced.\n");    
+             ////printf("proc_stmt reduced.\n");    
              $$ = (char*)(new proc_stmt_s);
              ((proc_stmt_s*)$$)->ID = string($1);
              ((proc_stmt_s*)$$)->args_list = NULL;
              ((proc_stmt_s*)$$)->readID = "";
-             //printf("[proc_stmt]%s\n", $1);             
+             ////printf("[proc_stmt]%s\n", $1);             
         }
         | _ID _LP args_list _RP {
-             //printf("proc_stmt reduced.\n");                
+             ////printf("proc_stmt reduced.\n");                
              $$ = (char*)(new proc_stmt_s);
              ((proc_stmt_s*)$$)->ID = string($1);
              ((proc_stmt_s*)$$)->args_list = (args_list_s*)$3;
              ((proc_stmt_s*)$$)->readID = "";
-             //printf("[proc_stmt]%s(args_list)\n", $1);                          
+             ////printf("[proc_stmt]%s(args_list)\n", $1);                          
         }
         | _SYS_PROC {
-             //printf("proc_stmt reduced.\n");                
+             ////printf("proc_stmt reduced.\n");                
              $$ = (char*)(new proc_stmt_s);
              ((proc_stmt_s*)$$)->ID = string($1);
              ((proc_stmt_s*)$$)->args_list = NULL;
              ((proc_stmt_s*)$$)->readID = "";
-             //printf("[proc_stmt]%s--SYS_PROC\n", $1);                                       
+             ////printf("[proc_stmt]%s--SYS_PROC\n", $1);                                       
         }
         | _SYS_PROC _LP args_list _RP {
-             //printf("proc_stmt reduced.\n");                
+             ////printf("proc_stmt reduced.\n");                
              $$ = (char*)(new proc_stmt_s);
              ((proc_stmt_s*)$$)->ID = string($1);
              ((proc_stmt_s*)$$)->args_list = (args_list_s*)$3;
              ((proc_stmt_s*)$$)->readID = "";
-             //printf("[proc_stmt]%s(args_list)--SYS_PROC\n", $1);                                                    
+             ////printf("[proc_stmt]%s(args_list)--SYS_PROC\n", $1);                                                    
         }
         | _READ _LP _ID _RP {
-             //printf("proc_stmt reduced.\n");                
+             ////printf("proc_stmt reduced.\n");                
              $$ = (char*)(new proc_stmt_s);
              ((proc_stmt_s*)$$)->ID = "read";
              ((proc_stmt_s*)$$)->args_list = NULL;
              ((proc_stmt_s*)$$)->readID = string($3);
-             //printf("[proc_stmt]READ(%s)--READ\n", $1);                                                                 
+             ////printf("[proc_stmt]READ(%s)--READ\n", $1);                                                                 
 };
 
 if_stmt : _IF  expression  _THEN  compound_stmt  else_clause {
@@ -673,7 +673,7 @@ for_stmt : _FOR  _ID  _ASSIGN  expression  direction  expression  _DO compound_s
             ((for_stmt_s*)$$)->expression1 = (expression_s*)$4;
             ((for_stmt_s*)$$)->expression2 = (expression_s*)$6;
             ((for_stmt_s*)$$)->compound_stmt = (compound_stmt_s*)$8;
-            printf("for_stmt reduced.\n");
+            //printf("for_stmt reduced.\n");
  };
 
 direction : _TO {
@@ -722,37 +722,37 @@ goto_stmt : _GOTO _INTEGER_NUM {
 };
 
 expression : expression  _GE  expr {
-            //printf("expression GE reduced.\n");
+            ////printf("expression GE reduced.\n");
             $$ = (char*)(new expression_s);
             ((expression_s*)$$)->TYPE = expression_s::GE;
             ((expression_s*)$$)->next = (expression_s*)$1;
             ((expression_s*)$$)->expr = (expr_s*)$3;
          }  |  expression _GT  expr {
-            //printf("expression GT reduced.\n");
+            ////printf("expression GT reduced.\n");
             $$ = (char*)(new expression_s);
             ((expression_s*)$$)->TYPE = expression_s::GT;
             ((expression_s*)$$)->next = (expression_s*)$1;
             ((expression_s*)$$)->expr = (expr_s*)$3;
          }  |  expression  _LE  expr {
-            //printf("expression LE reduced.\n");
+            ////printf("expression LE reduced.\n");
             $$ = (char*)(new expression_s);
             ((expression_s*)$$)->TYPE = expression_s::LE;
             ((expression_s*)$$)->next = (expression_s*)$1;
             ((expression_s*)$$)->expr = (expr_s*)$3;
          }  |  expression  _LT  expr {
-            //printf("expression LT reduced.\n");
+            ////printf("expression LT reduced.\n");
             $$ = (char*)(new expression_s);
             ((expression_s*)$$)->TYPE = expression_s::LT;
             ((expression_s*)$$)->next = (expression_s*)$1;
             ((expression_s*)$$)->expr = (expr_s*)$3;
          }  |  expression  _EQUAL  expr {
-            //printf("expression EQUAL reduced.\n");
+            ////printf("expression EQUAL reduced.\n");
             $$ = (char*)(new expression_s);
             ((expression_s*)$$)->TYPE = expression_s::EQUAL;
             ((expression_s*)$$)->next = (expression_s*)$1;
             ((expression_s*)$$)->expr = (expr_s*)$3;
          }  |  expression  _UNEQUAL  expr {
-            //printf("expression UNEQUAL reduced.\n");
+            ////printf("expression UNEQUAL reduced.\n");
             $$ = (char*)(new expression_s);
             ((expression_s*)$$)->TYPE = expression_s::UNEQUAL;
             ((expression_s*)$$)->next = (expression_s*)$1;
@@ -762,7 +762,7 @@ expression : expression  _GE  expr {
             ((expression_s*)$$)->TYPE = expression_s::NULL_OPERATOR;
             ((expression_s*)$$)->next = NULL;
             ((expression_s*)$$)->expr = (expr_s*)$1;
-            //printf("expression (expr) reduced.\n");
+            ////printf("expression (expr) reduced.\n");
 };
              
 expr : expr _PLUS term {
@@ -835,7 +835,7 @@ factor : _ID  {
             ((factor_s*)$$)->next = NULL;
             //printf("[factor]%s\n",((factor_s*)$$)->ID.c_str());
      } |  _ID  _LP  args_list  _RP {
-            //printf("factor reduced.\n");                        
+            ////printf("factor reduced.\n");                        
             $$ = (char*)(new factor_s);
             ((factor_s*)$$)->TYPE = factor_s::FUNCTION_WITH_ARGS;
             ((factor_s*)$$)->ID = string($1);
@@ -844,9 +844,9 @@ factor : _ID  {
             ((factor_s*)$$)->ID_DOT_ID = NULL;
             ((factor_s*)$$)->expression = NULL;
             ((factor_s*)$$)->next = NULL;
-            //printf("[factor]%s(args_list)\n",((factor_s*)$$)->ID.c_str());            
+            ////printf("[factor]%s(args_list)\n",((factor_s*)$$)->ID.c_str());            
      } |  _SYS_FUNC {
-            //printf("factor reduced.\n");                        
+            ////printf("factor reduced.\n");                        
             $$ = (char*)(new factor_s);
             ((factor_s*)$$)->TYPE = factor_s::SYS_FUNCT;
             ((factor_s*)$$)->ID = string($1);
@@ -855,7 +855,7 @@ factor : _ID  {
             ((factor_s*)$$)->ID_DOT_ID = NULL;
             ((factor_s*)$$)->expression = NULL;
             ((factor_s*)$$)->next = NULL;
-            //printf("[factor]%s---SYS_FUNC\n",((factor_s*)$$)->ID.c_str());                        
+            ////printf("[factor]%s---SYS_FUNC\n",((factor_s*)$$)->ID.c_str());                        
      } |  _SYS_FUNC  _LP  args_list  _RP  {
             $$ = (char*)(new factor_s);
             ((factor_s*)$$)->TYPE = factor_s::SYS_FUNCT_WITH_ARGS;
@@ -865,8 +865,8 @@ factor : _ID  {
             ((factor_s*)$$)->ID_DOT_ID = NULL;
             ((factor_s*)$$)->expression = NULL;
             ((factor_s*)$$)->next = NULL;
-            //printf("factor reduced.\n");
-            //printf("[factor]%s(args_list)---SYS_FUNC\n",((factor_s*)$$)->ID.c_str());                                    
+            ////printf("factor reduced.\n");
+            ////printf("[factor]%s(args_list)---SYS_FUNC\n",((factor_s*)$$)->ID.c_str());                                    
      } |  const_value {
             $$ = (char*)(new factor_s);
             ((factor_s*)$$)->TYPE = factor_s::CONST_VALUE;
@@ -896,7 +896,7 @@ factor : _ID  {
             ((factor_s*)$$)->ID_DOT_ID = NULL;
             ((factor_s*)$$)->expression = NULL;
             ((factor_s*)$$)->next = (factor_s*)$2;
-            //printf("factor (NOT factor) reduced.\n");            
+            ////printf("factor (NOT factor) reduced.\n");            
      } |  _MINUS  factor {
             $$ = (char*)(new factor_s);
             ((factor_s*)$$)->TYPE = factor_s::NOT_FACTOR;
@@ -906,7 +906,7 @@ factor : _ID  {
             ((factor_s*)$$)->ID_DOT_ID = NULL;
             ((factor_s*)$$)->expression = NULL;
             ((factor_s*)$$)->next = (factor_s*)$2;
-            //printf("factor (- factor) reduced.\n");            
+            //printf("factor (-factor) reduced.\n");            
      } |  _ID  _LB  expression  _RB {
             $$ = (char*)(new factor_s);
             ((factor_s*)$$)->TYPE = factor_s::ID_WITH_EXPRESSION;
@@ -916,7 +916,7 @@ factor : _ID  {
             ((factor_s*)$$)->ID_DOT_ID = NULL;
             ((factor_s*)$$)->expression = (expression_s*)$3;
             ((factor_s*)$$)->next = NULL;
-            //printf("factor %s[expression] reduced.\n",((factor_s*)$$)->ID.c_str());            
+            ////printf("factor %s[expression] reduced.\n",((factor_s*)$$)->ID.c_str());            
      } |  _ID  _DOT  _ID {
             $$ = (char*)(new factor_s);
             ((factor_s*)$$)->TYPE = factor_s::ID_DOT_ID_TYPE;
@@ -926,7 +926,7 @@ factor : _ID  {
             ((factor_s*)$$)->ID_DOT_ID = new pair<string,string>(string($1),string($3));
             ((factor_s*)$$)->expression = NULL;
             ((factor_s*)$$)->next = NULL;
-            //printf("factor %s.%s reduced.\n",((factor_s*)$$)->ID_DOT_ID->first.c_str(),((factor_s*)$$)->ID_DOT_ID->second.c_str());                        
+            ////printf("factor %s.%s reduced.\n",((factor_s*)$$)->ID_DOT_ID->first.c_str(),((factor_s*)$$)->ID_DOT_ID->second.c_str());                        
 };
 
 args_list : args_list  _COMMA  expression {
@@ -944,7 +944,7 @@ args_list : args_list  _COMMA  expression {
 
 int yyerror(const char *s)
 {
-    printf("line %d: %s\n",line_no,s);
+    //printf("line %d: %s\n",line_no,s);
     return 0;
 }
 
@@ -958,7 +958,7 @@ int main(int argc, char* args[])
         filename = string(args[1]);
     yyin = fopen(filename.c_str(), "r");
     if (yyin == NULL) {
-        printf("cannot open pascal.pas\n");
+        //printf("cannot open pascal.pas\n");
         system("Pause");
         return 0;
     }
@@ -969,7 +969,7 @@ int main(int argc, char* args[])
     if(finished)
         outputCode(program);
     else
-        printf("parse failed.\n");
+        //printf("parse failed.\n");
     
     /*code generation*/
     
