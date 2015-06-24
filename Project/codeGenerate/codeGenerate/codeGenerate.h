@@ -11,12 +11,13 @@ class codeGenerate
 public:
 	codeGenerate();
 	virtual ~codeGenerate();
+	void beginGenerate(symtab_function_block_s* function_struct,program_s* program);
 	void output();
 private:
 	string startSegment;
 	string dataSegment;
 	string codeSegment;
-	string body;
+	string generateCode;
 
 	//entry function
 	string generate_program(symtab_function_block_s* function_struct, program_s* program);

@@ -1,0 +1,3 @@
+const part部分暂时不支持string类型的常量说明
+
+array的申明类型只支持四种基本类型：boolean，real, int, char，暂时也不支持stirng，同时复杂结构体由于文法不支持所以也不支持。

@@ -85,6 +85,7 @@
   <ItemGroup>
     <ClCompile Include="cd_symtab.cpp" />
     <ClCompile Include="codeGenerate.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
