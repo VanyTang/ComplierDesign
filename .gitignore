@@ -5,3 +5,5 @@ y.tab.h
 *~
 mycomp
 *.swp
+Project/codeGenerate/codeGenerate.sdf
+*.opensdf
