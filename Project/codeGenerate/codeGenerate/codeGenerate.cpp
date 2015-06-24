@@ -182,10 +182,11 @@ string codeGenerate::generate_type_part(symtab_function_block_s* func, type_part
 			symtab_type->system_type == NULL;
 			symtab_type->record_type->size = 0;
 			vector<field_decl_s*>::iterator fieldIter;
-			int 
+			int basic_byte = 0;//record the namelist size byte
 			for (fieldIter = (*iter)->type_decl->record_type_decl->field_decl.end() - 1;
 				fieldIter != (*iter)->type_decl->record_type_decl->field_decl.begin() - 1; fieldIter--){
 				symtab_systype_s* symtab_systype = new symtab_systype_s;
+				basic_byte = 0;
 				if ((*fieldIter)->type_decl->simple_type_decl == NULL){
 					exit_with_error("record type declaration doesn't support complicated type");
 				}
@@ -194,23 +195,29 @@ string codeGenerate::generate_type_part(symtab_function_block_s* func, type_part
 				if ((*fieldIter)->type_decl->simple_type_decl->SYS_TYPE_NAME == "INTEGER")
 				{
 					symtab_systype->type = symtab_systype_s::INTEGER;
+					basic_byte = 2;
 				}
 				else if ((*fieldIter)->type_decl->simple_type_decl->SYS_TYPE_NAME == "CHAR"){
 					symtab_systype->type = symtab_systype_s::CHAR;
+					basic_byte = 1;
 				}
 				else if ((*fieldIter)->type_decl->simple_type_decl->SYS_TYPE_NAME == "REAL"){
 					symtab_systype->type = symtab_systype_s::REAL;
+					//此处待添加和修改，浮点型处理
 				}
 				else if ((*fieldIter)->type_decl->simple_type_decl->SYS_TYPE_NAME == "BOOLEAN"){
 					symtab_systype->type = symtab_systype_s::BOOLEAN;
+					basic_byte = 1;
 				}
 				
 				vector<string>::iterator nameIter;
 				for (nameIter = (*fieldIter)->name_list.end() - 1; 
 					nameIter != (*fieldIter)->name_list.begin() - 1; nameIter--){
-
+					//insert system type
+					symtab_type->record_type->component.insert(pair<string, symtab_systype_s*>((*nameIter),symtab_systype));
+					//increase the size
+					symtab_type->record_type->size += basic_byte;
 				}
-				symtab_type->record_type->component.insert(pair<string,symtab_systype_s*>());
 			}
 		}
 		else if ((*iter)->type_decl->simple_type_decl != NULL){
