@@ -32,11 +32,213 @@ void const_part(const_part_s* node);
 void routine_head(routine_head_s* node);
 void routine(routine_s* node);
 void program (program_s* node);
+void expression(expression_s* node);
 
 
+void args_list(args_list_s* node)
+{
+    if(node->next!=NULL)
+    {
+        args_list(node->next);
+        cout << ", ";
+        expression(node->expression);
+    }
+    else
+        expression(node->expression);
+}
+void factor(factor_s* node)
+{
+    switch(node->TYPE)
+    {
+        case factor_s::MINUS_FACTOR: 
+            cout << "-"; factor(node->next); break;
+        case factor_s::NOT_FACTOR: 
+            cout << "NOT "; factor(node->next); break;
+        case factor_s::ID_TYPE:
+            cout << node->ID; break;
+        case factor_s::FUNCTION_WITH_ARGS: case factor_s::SYS_FUNCT_WITH_ARGS:
+            cout << node->ID << "(";
+            args_list(node->args_list);
+            cout<< ")";
+            break;
+        case factor_s::SYS_FUNCT:
+            cout << node->ID;
+            break;
+        case factor_s::CONST_VALUE:
+            const_value(node->const_value);
+            break;
+        case factor_s::EXPRESSION:
+            expression(node->expression);
+            break;
+        case factor_s::ID_WITH_EXPRESSION:
+            cout << node->ID << "[";
+            args_list(node->args_list);
+            cout<< "]";
+            break;
+        case factor_s::ID_DOT_ID_TYPE:
+            cout << node->ID_DOT_ID->first << "." << node->ID_DOT_ID->second;
+            break;
+    }
+}
+void term(term_s* node)
+{
+    if(node->next!=NULL) term(node->next);
+    switch(node->TYPE)
+    {
+        case term_s::MUL: cout << " * "; break;
+        case term_s::DIV: cout << " / "; break;
+        case term_s::MOD: cout << " MOD "; break;
+        case term_s::AND: cout << " AND "; break;
+        case term_s::NULL_OPERATOR: break;
+    }
+    factor(node->factor);
+}
+void expr(expr_s* node)
+{
+    if(node->next!=NULL) expr(node->next);
+    switch(node->TYPE)
+    {
+        case expr_s::PLUS: cout << " + "; break;
+        case expr_s::MINUS: cout << " - "; break;
+        case expr_s::OR: cout << " OR "; break;
+        case expr_s::NULL_OPERATOR: break;
+    }
+    term(node->term);
+}
+
+void expression(expression_s* node)
+{
+    if(node->next!=NULL) expression(node->next);
+    switch(node->TYPE)
+    {
+        case expression_s::GE: cout << " >= "; break;
+        case expression_s::GT: cout << " > "; break;
+        case expression_s::LE: cout << " <= "; break;
+        case expression_s::LT: cout << " < "; break;
+        case expression_s::EQUAL: cout << " = "; break;
+        case expression_s::UNEQUAL: cout << " <> "; break;
+        case expression_s::NULL_OPERATOR: break;
+    }
+    expr(node->expr);
+}
 void stmt(stmt_s* node)
 {
+    if(node->INTEGER!=NULL)
+        cout << *node->INTEGER << ": ";
+    non_label_stmt_s* p = node->non_label_stmt;
+    if(p->assign_stmt!=NULL)
+    {
+        assign_stmt_s* ps = p->assign_stmt;
+        switch(ps->TYPE)
+        {
+            case 0:
+                cout << ps->ID << " := ";
+                expression(ps->expression);
+                break;
+            case 1:
+                cout << ps->ID << "[";
+                expression(ps->expression_idx);
+                cout << "]" << " := ";
+                expression(ps->expression);
+                break;
+            case 2:
+                cout << ps->ID_DOT_ID->first << "." << ps->ID_DOT_ID->second;
+                cout << " := ";
+                expression(ps->expression);
+                break;
+        }
+    }
+    else if(p->proc_stmt!=NULL)
+    {
+        cout << p->proc_stmt->ID;
+        if(p->proc_stmt->args_list!=NULL)
+        {
+            cout << "(";
+            args_list(p->proc_stmt->args_list);
+            cout << ")";
+        }
+        if(p->proc_stmt->ID=="read")
+        {
+            cout << "(" << p->proc_stmt->readID << ")";
+        }
+    }
+    else if(p->compound_stmt!=NULL)
+    {
+        compound_stmt(p->compound_stmt);
+    }
+    else if(p->if_stmt!=NULL)
+    {
+        cout << "IF ";
+        expression(p->if_stmt->expression);
+        cout << "THEN" << endl;
+        compound_stmt(p->if_stmt->compound_stmt);
+        if(p->if_stmt->else_clause!=NULL)
+        {
+            cout << "ELSE" << endl;
+            compound_stmt(p->if_stmt->else_clause->compound_stmt);
+        }
+    }
+    else if(p->repeat_stmt!=NULL)
+    {
+        cout << "REPEAT " << endl;
+        vector<stmt_s*>::iterator it =p->repeat_stmt->stmt.begin();
+        for(;it != p->repeat_stmt->stmt.end(); ++it)
+            stmt(*it);
+        cout << "UNTIL ";
+        expression(p->repeat_stmt->expression);
+    }
+    else if(p->while_stmt!=NULL)
+    {
+        cout << "WHILE ";
+        expression(p->while_stmt->expression);
+        cout << endl << "DO" << endl;
+        compound_stmt(p->while_stmt->compound_stmt);
+    }
+    else if(p->for_stmt!=NULL)
+    {
+        cout << "FOR " << p->for_stmt->ID << " := ";
+        expression(p->for_stmt->expression1);
+        switch(p->for_stmt->direction)
+        {
+            case for_stmt_s::TO: cout << " TO "; break;
+            case for_stmt_s::DOWNTO: cout << " DOWNTO "; break;
+        }
+        expression(p->for_stmt->expression2);
+        cout << "DO" << endl;
+        compound_stmt(p->for_stmt->compound_stmt);
+    }
+    else if(p->case_stmt!=NULL)
+    {
+        cout << "CASE ";
+        expression(p->case_stmt->expression);
+        cout << " OF" << endl;
 
+        vector<case_expr_s*>::iterator it = p->case_stmt->case_expr.begin();
+        for(;it != p->case_stmt->case_expr.end();++it)
+        {
+            case_expr_s* ps = *it;
+            if(ps->const_value!=NULL)
+            {
+                const_value(ps->const_value);
+                cout << " : ";
+                stmt(ps->stmt);
+                cout << ";" << endl;
+            }
+            else
+            {
+                cout << *(ps->ID);
+                cout << " : ";
+                stmt(ps->stmt);
+                cout << ";" << endl;
+            }
+        }
+        cout << "END" << endl;
+    }
+    else if(p->goto_stmt!=NULL)
+    {
+        cout << "goto " << p->goto_stmt->INTEGER;
+    }
+    cout << ";"  << endl;
 }
 
 void compound_stmt(compound_stmt_s* node)

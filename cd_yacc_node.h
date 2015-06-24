@@ -150,6 +150,7 @@ struct simple_type_decl_s{
 		ENUM_TYPE = 2,
 		RANGE_TYPE = 3
 	} TYPE;
+	int isChar;//The type of range variable, char:1 int: 0
 };
 
 //array_type_decl ： ARRAY  LB  simple_type_decl  RB  OF  type_decl
@@ -444,8 +445,9 @@ struct term_s{
 	}TYPE;
 };
 
-/*factor ： ID  |  ID  LP  args_list  RP  |  SYS_FUNCT | SYS_FUNCT  LP  args_list  RP  |  const_value  |  LP  expression  RP
-          |  NOT  factor  |  MINUS  factor  |  ID  LB  expression  RB |  ID  DOT  ID*/
+/*factor ： ID  |  ID  LP  args_list  RP  |  SYS_FUNCT 
+			| SYS_FUNCT  LP  args_list  RP  |  const_value  |  LP  expression  RP
+            |  NOT  factor  |  MINUS  factor  |  ID  LB  expression  RB |  ID  DOT  ID*/
 struct factor_s{
 	string ID;
 	args_list_s* args_list;							//record the ID(args_list) where ID is a function ID

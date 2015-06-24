@@ -14,7 +14,7 @@
 	program_s program;
 
         extern "C"{
-              void yyerror(const char *s);
+              int yyerror(const char *s);
               extern int yylex(void);
         }
 
@@ -49,7 +49,7 @@
 %%
 
 program : program_head routine _DOT{
-        //printf("program reduced.\n");
+        printf("program reduced.\n");
 	    $$ = (char*)&program;
         ((program_s*)$$)->ID = ((program_head_s*)$1)->ID;
 	    ((program_s*)$$)->routine = (routine_s*)$2;
@@ -313,6 +313,7 @@ routine_part :  routine_part  function_decl {
                 ((routine_part_s*)$$)->function_decl = NULL;
              }
              |  function_decl {
+                printf("function_decl reduced.\n");
                 $$ = (char*)(new routine_part_s);
                 ((routine_part_s*)$$)->next = NULL;
                 ((routine_part_s*)$$)->procedure_decl = NULL;
@@ -335,6 +336,7 @@ function_decl : function_head _SEMI routine _SEMI {
 };
 
 function_head : _FUNCTION _ID parameters _COLON simple_type_decl {
+                printf("function_head reduced.\n");
                 $$ = (char*)(new function_head_s);
                 ((function_head_s*)$$)->ID = string($2);
                 ((function_head_s*)$$)->parameters = (parameters_s*)$5;
@@ -349,8 +351,8 @@ procedure_decl : procedure_head _SEMI routine _SEMI {
 
 procedure_head : _PROCEDURE _ID parameters {
                 $$ = (char*)(new procedure_decl_s);
-                ((function_head_s*)$$)->ID = string($2);
-                ((function_head_s*)$$)->parameters = (parameters_s*)$3;
+                ((procedure_head_s*)$$)->ID = string($2);
+                ((procedure_head_s*)$$)->parameters = (parameters_s*)$3;
 };
 
 
@@ -932,9 +934,10 @@ args_list : args_list  _COMMA  expression {
 %%
 
 
-void yyerror(const char *s)
+int yyerror(const char *s)
 {
     printf("%d %s\n",line_no,s);
+    return 0;
 }
 
 int main(int argc, char* args[])

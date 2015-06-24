@@ -22,6 +22,17 @@
 在vector<xxx>的使用中，例如compound_stmt中，实际顺序应该是vector的逆序，
 这和next的实际链表转换成vector的过程有关，为了方便就不改了，实际过程中，要注意一下
 
+label是数字类型，即0001和001的label是一致的。
+
+cd_yacc_node.h中struct simple_type_decl_s;
+对于RANGE_TYPE，包括      |  const_value  DOTDOT  const_value  
+              			 |  MINUS  const_value  DOTDOT  const_value
+                		 |  MINUS  const_value  DOTDOT  MINUS  const_value
+                	     |  ID  DOTDOT  ID
+可以通过判ID这个vector是否为空来判断是否是ID DOTDOT ID产生式，否则是其他三个产生式（其值存储在MIN,MAX）中
+
+case语句中label和case前面的int可能产生歧义？
+
 ## 关于测试数据testcode
 
 test0.pas是默认用于测试的
@@ -44,13 +55,3 @@ SYS_CON: "false", "maxint", "true"
 SYS_TYPE: "integer", "real", "boolean", "char"
 
 const_value 中的 STRING是不是不要实现了。
-
-##　关于cd_yacc_node.h的说明
-
-### struct simple_type_decl_s;
-对于RANGE_TYPE，包括      |  const_value  DOTDOT  const_value  
-              			 |  MINUS  const_value  DOTDOT  const_value
-                		 |  MINUS  const_value  DOTDOT  MINUS  const_value
-                	     |  ID  DOTDOT  ID
-可以通过判ID这个vector是否为空来判断是否是ID DOTDOT ID产生式，否则是其他三个产生式（其值存储在MIN,MAX）中
-
