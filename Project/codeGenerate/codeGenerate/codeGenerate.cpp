@@ -5,17 +5,17 @@
 
 using namespace std;
 
-codeGenerate::codeGenerate(){
-	
+codeGenerate::codeGenerate(program_s* program){
+	symtab_function_block_s* main_function_struct = new symtab_function_block_s;
+	main_function_struct->father_node = NULL;
+	main_function_struct->name = "main";
+	generateCode = generate_program(main_function_struct, program);
+	output();
+	delete main_function_struct;
 }
 
 codeGenerate::~codeGenerate(){
 
-}
-
-void codeGenerate::beginGenerate(symtab_function_block_s* func, program_s* program){
-	generateCode = generate_program(func, program);
-	output();
 }
 
 void codeGenerate::output(){
@@ -109,7 +109,6 @@ string codeGenerate::generate_const_part(symtab_function_block_s* func, const_pa
 
 	return ss.str();
 }
-
 
 string codeGenerate::generate_type_part(symtab_function_block_s* func, type_part_s* type_part){
 	stringstream ss;
@@ -346,7 +345,19 @@ string codeGenerate::generate_type_part(symtab_function_block_s* func, type_part
 			exit_with_error(err.str());
 		}
 	}
+	return ss.str();
 }
+
+string codeGenerate::generate_var_part(symtab_function_block_s* func, var_part_s* var_part){
+	stringstream ss; ss.clear(); ss.str("");
+
+	return ss.str();
+}
+
+string codeGenerate::generate_routine_part(symtab_function_block_s* func, )
+
+
+
 
 
 //---------------------------------------------------------------------------------------------

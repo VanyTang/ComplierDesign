@@ -11,16 +11,17 @@ using namespace std;
 class codeGenerate
 {
 public:
-	codeGenerate();
+	codeGenerate(program_s* program);
 	virtual ~codeGenerate();
-	void beginGenerate(symtab_function_block_s* function_struct,program_s* program);
-	void output();
-	void exit_with_error(string error);
 private:
 	string startSegment;
 	string dataSegment;
 	string codeSegment;
 	string generateCode;
+
+	//output and error
+	void output();
+	void exit_with_error(string error);
 
 	//entry function
 	string generate_program(symtab_function_block_s* function_struct, program_s* program);
