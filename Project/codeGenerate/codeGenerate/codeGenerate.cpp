@@ -12,8 +12,15 @@ codeGenerate::~codeGenerate(){
 
 }
 
+void codeGenerate::beginGenerate(symtab_function_block_s* func, program_s* program){
+	generateCode = generate_program(func, program);
+	output();
+}
+
 void codeGenerate::output(){
 	ofstream fout("output.asm");
+	fout << generateCode;
+	fout.close();
 }
 
 string codeGenerate::generate_program(symtab_function_block_s* func, program_s* program){
@@ -93,7 +100,27 @@ string codeGenerate::generate_const_part(symtab_function_block_s* func, const_pa
 
 
 string codeGenerate::generate_type_part(symtab_function_block_s* func, type_part_s* type_part){
+	stringstream ss;
+	ss.clear(); ss.str("");
 
+	vector<type_definition_s*>::iterator iter;
+	for (iter = type_part->type_definition.end() - 1; iter != type_part->type_definition.begin() - 1; iter--){
+		symtab_type_s* symtab_type = new symtab_type_s;
+		if ((*iter)->type_decl->array_type_decl != NULL){
+			symtab_type->array_type = new symtab_array_s;
+			if ((*iter)->type_decl->array_type_decl->type_decl->simple_type_decl->SYS_TYPE == )
+				symtab_type->array_type->type.type = symtab_systype_s::
+			
+		}
+		else if ((*iter)->type_decl->record_type_decl != NULL){
+
+		}
+		else if ((*iter)->type_decl->simple_type_decl != NULL){
+
+		}
+
+		func->type_table.insert(pair<string, symtab_type_s*>((*iter)->ID,symtab_type));
+	}
 }
 
 

@@ -14,6 +14,17 @@ struct symtab_systype_s{
 	}type;
 };
 
+struct symtab_range_s{
+	union{
+		int int_down;
+		char char_down;
+	} down;
+	union{
+		int int_up;
+		char char_up;
+	} up;
+};
+
 struct symtab_enum_s{
 	map<string, int> enum_name_table;			//record the corresponding name and int
 	int down;
@@ -23,10 +34,7 @@ struct symtab_enum_s{
 struct symtab_array_s{
 	symtab_systype_s type;
 	symtab_enum_s* index_enum;
-	int int_down;
-	int int_up;
-	char char_up;
-	char char_down;
+	symtab_range_s* index_range;
 	int index_type;
 	//0		int
 	//1		char
@@ -35,7 +43,7 @@ struct symtab_array_s{
 
 struct symtab_record_s{
 	int size;	//basical unit is byte
-	map<string,symtab_type_s*> component;		//record the component of the 
+	map<string, symtab_systype_s*> component;		//record the component of the 
 };
 
 struct symtab_type_s{
@@ -73,6 +81,7 @@ struct symtab_function_block_s{
 	map<string, symtab_variable_s*> variable_table;
 	map<string, symtab_enum_s*> enum_table;
 	map<string, symtab_const_s*> const_table;
+	map<string, symtab_type_s*> type_table;
 };
 
 #endif
