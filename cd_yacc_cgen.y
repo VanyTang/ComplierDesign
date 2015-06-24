@@ -1,5 +1,9 @@
 %{
+    #define UC 
 	#include "cd_yacc_node.h"
+#ifdef UC
+        #include "./Project/codeGenerate/codeGenerate/codeGenerate.h"
+#endif
 	#include <stdio.h>
 	#include <stdlib.h>
 	#include <string.h>
@@ -975,9 +979,12 @@ int main(int argc, char* args[])
     if(finished)
         outputCode(program);
     else
-        //printf("parse failed.\n");
-    
+        printf("parse failed.\n");
+
+#ifdef UC
     /*code generation*/
+    codeGenerate cg(&program);
+#endif
     
     fclose(yyin);
     return 0;
