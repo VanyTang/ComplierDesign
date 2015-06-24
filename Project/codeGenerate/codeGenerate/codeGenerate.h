@@ -4,6 +4,8 @@
 #include <sstream>
 #include <fstream>
 
+#define MIN_ENUM_INT 0
+
 using namespace std;
 
 class codeGenerate
@@ -13,6 +15,7 @@ public:
 	virtual ~codeGenerate();
 	void beginGenerate(symtab_function_block_s* function_struct,program_s* program);
 	void output();
+	void exit_with_error(string error);
 private:
 	string startSegment;
 	string dataSegment;
